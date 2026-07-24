@@ -1,0 +1,6292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Jefferson Landing 2026 — Golf Weekend</title>
+<style>
+  :root{
+    --bg:#f4f6f4; --panel:#ffffff; --ink:#182018; --muted:#5c6b5c; --line:#e2e8e2;
+    --accent:#2e7d32; --accent2:#1b5e20; --gold:#c8a44d; --chip:#eef2ee;
+    --eagle:#0b7d5b; --birdie:#4fae7d; --par:#cfd8cf; --bogey:#e8a37c; --double:#d9694a;
+    --shadow:0 1px 3px rgba(20,40,20,.08),0 6px 20px rgba(20,40,20,.06);
+  }
+  @media (prefers-color-scheme:dark){
+    :root{ --bg:#0f150f; --panel:#18201a; --ink:#e8efe6; --muted:#9fb0a0; --line:#28332a;
+      --accent:#5cbe63; --accent2:#8fd694; --gold:#d9b968; --chip:#212c22;
+      --eagle:#2bd79a; --birdie:#5fce93; --par:#3a4a3c; --bogey:#c98a63; --double:#e0795a; }
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    -webkit-font-smoothing:antialiased;line-height:1.45}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 16px 80px}
+  header.top{background:linear-gradient(135deg,var(--accent2),var(--accent));color:#fff;
+    padding:26px 16px 22px;text-align:center;box-shadow:var(--shadow)}
+  header.top h1{margin:0;font-size:clamp(20px,4.5vw,30px);letter-spacing:.2px}
+  header.top p{margin:6px 0 0;opacity:.9;font-size:14px}
+  nav.tabs{position:sticky;top:0;z-index:20;background:var(--panel);border-bottom:1px solid var(--line);
+    display:flex;gap:2px;overflow-x:auto;padding:6px 10px;box-shadow:var(--shadow)}
+  nav.tabs button{flex:0 0 auto;border:0;background:transparent;color:var(--muted);
+    font-size:14px;font-weight:600;padding:9px 14px;border-radius:10px;cursor:pointer;white-space:nowrap}
+  nav.tabs button.active{background:var(--accent);color:#fff}
+  section{margin-top:22px}
+  h2.sec{font-size:15px;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);
+    margin:0 0 12px;font-weight:700}
+  .panel{background:var(--panel);border:1px solid var(--line);border-radius:16px;
+    padding:16px;box-shadow:var(--shadow)}
+  .hide{display:none}
+  /* champion */
+  .champ{display:flex;align-items:center;gap:16px;background:linear-gradient(135deg,#faf6e9,#fff);
+    border:1px solid var(--gold);border-radius:16px;padding:16px 18px;margin-bottom:16px}
+  @media(prefers-color-scheme:dark){.champ{background:linear-gradient(135deg,#241f10,#18201a)}}
+  .champ .medal{font-size:40px}
+  .champ .who{font-size:22px;font-weight:800}
+  .champ .sub{color:var(--muted);font-size:13px}
+  /* leaderboard */
+  table.lb{width:100%;border-collapse:collapse}
+  table.lb th,table.lb td{padding:10px 8px;text-align:left;border-bottom:1px solid var(--line);font-size:14px}
+  table.lb th{color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.5px}
+  table.lb td.num,table.lb th.num{text-align:right;font-variant-numeric:tabular-nums}
+  .rank{display:inline-flex;width:24px;height:24px;align-items:center;justify-content:center;
+    border-radius:50%;background:var(--chip);font-weight:700;font-size:12px}
+  .rank.r1{background:var(--gold);color:#3a2e07}
+  .bar{height:8px;border-radius:6px;background:var(--accent);opacity:.85}
+  .pname{font-weight:700;display:inline-flex;align-items:center;gap:8px}
+  .dot{width:10px;height:10px;border-radius:50%;flex:0 0 auto}
+  /* chips / selectors */
+  .selrow{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+  .selrow button{border:1px solid var(--line);background:var(--panel);color:var(--ink);
+    font-weight:600;font-size:13px;padding:8px 13px;border-radius:20px;cursor:pointer}
+  .selrow button.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+  /* cards grid */
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}
+  .stat{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px}
+  .stat .lab{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
+  .stat .val{font-size:22px;font-weight:800;margin-top:4px}
+  .stat .who2{font-size:13px;color:var(--muted);margin-top:2px}
+  /* match card */
+  .mcard{border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:10px;background:var(--panel)}
+  .mcard .lab{font-size:12px;color:var(--muted);letter-spacing:.4px}
+  .teamrow{display:flex;align-items:center;gap:10px;margin-top:8px}
+  .teamrow .nm{flex:1;font-weight:700;font-size:14px}
+  .teamrow .sc{font-variant-numeric:tabular-nums;font-weight:800;font-size:18px}
+  .teamrow.win .sc{color:var(--accent)}
+  .badge{display:inline-block;font-size:11px;font-weight:700;padding:3px 9px;border-radius:20px;
+    background:var(--accent);color:#fff;margin-top:8px}
+  .badge.tie{background:var(--muted)}
+  /* scorecard grid */
+  .toggle{display:inline-flex;border:1px solid var(--line);border-radius:20px;overflow:hidden;margin-bottom:12px}
+  .toggle button{border:0;background:var(--panel);color:var(--muted);font-weight:600;font-size:12px;
+    padding:7px 14px;cursor:pointer}
+  .toggle button.active{background:var(--accent);color:#fff}
+  .scwrap{overflow-x:auto}
+  table.sc{border-collapse:collapse;width:100%;min-width:560px;font-size:13px}
+  table.sc th,table.sc td{padding:7px 6px;text-align:center;border-bottom:1px solid var(--line);
+    font-variant-numeric:tabular-nums}
+  table.sc th{color:var(--muted);font-size:11px;font-weight:700}
+  table.sc td.pl{text-align:left;font-weight:700;white-space:nowrap}
+  table.sc td.tot{font-weight:800}
+  table.sc tr.parrow th{font-weight:700;color:var(--ink);font-size:11px}
+  .cell{display:inline-flex;min-width:22px;justify-content:center;padding:2px 4px;border-radius:6px}
+  .c-eagle{background:var(--eagle);color:#fff}
+  .c-birdie{background:var(--birdie);color:#08301f}
+  .c-par{background:var(--par);color:var(--ink)}
+  .c-bogey{background:var(--bogey);color:#3a1a08}
+  .c-double{background:var(--double);color:#fff}
+  .bonusdot{color:var(--gold);font-weight:900}
+  .legend{display:flex;flex-wrap:wrap;gap:12px;margin-top:10px;font-size:12px;color:var(--muted)}
+  .legend span{display:inline-flex;align-items:center;gap:5px}
+  .legend i{width:12px;height:12px;border-radius:3px;display:inline-block}
+  /* player profile */
+  .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin-bottom:14px}
+  .catbars{display:grid;gap:8px}
+  .catbar{display:flex;align-items:center;gap:8px;font-size:13px}
+  .catbar .k{width:64px;color:var(--muted)}
+  .catbar .track{flex:1;background:var(--chip);border-radius:6px;height:16px;position:relative;overflow:hidden}
+  .catbar .fill{display:block;height:100%;border-radius:6px;min-width:2px}
+  .catbar .n{width:26px;text-align:right;font-weight:700;font-variant-numeric:tabular-nums}
+  .ninebars{display:flex;gap:6px;align-items:flex-end;height:90px;margin-top:6px}
+  .ninebars .b{flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:4px}
+  .ninebars .b .bar2{width:100%;background:var(--accent);border-radius:5px 5px 0 0;min-height:3px}
+  .ninebars .b .cap{font-size:10px;color:var(--muted)}
+  .ninebars .b .v{font-size:11px;font-weight:700}
+  .note{font-size:12px;color:var(--muted);margin-top:10px}
+  .foot{text-align:center;color:var(--muted);font-size:12px;margin-top:30px}
+</style>
+</head>
+<body>
+<header class="top">
+  <h1>⛳ Jefferson Landing 2026</h1>
+  <p>Golf Weekend · 63 holes · 7 nine-hole matches · Friday–Saturday</p>
+</header>
+<nav class="tabs" id="tabs">
+  <button data-tab="standings" class="active">Standings</button>
+  <button data-tab="teams">Team Matches</button>
+  <button data-tab="matches">Scorecards</button>
+  <button data-tab="players">Player Cards</button>
+  <button data-tab="records">Records</button>
+</nav>
+<div class="wrap">
+
+  <section id="standings"></section>
+  <section id="teams" class="hide"></section>
+  <section id="matches" class="hide"></section>
+  <section id="players" class="hide"></section>
+  <section id="records" class="hide"></section>
+
+  <div class="foot">Net Stableford (0/1/2/4/8/12) · handicaps by 18-hole stroke index · team matches by total net strokes.<br>Built from the final score sheet. Match 3 rotation auto-corrected (D→E).</div>
+</div>
+<script>
+const DATA = {
+"players": [
+{
+"code": "A",
+"name": "keith",
+"hc": 11
+},
+{
+"code": "B",
+"name": "Hicks",
+"hc": 21
+},
+{
+"code": "C",
+"name": "Joe",
+"hc": 19
+},
+{
+"code": "D",
+"name": "Tusc",
+"hc": 9
+},
+{
+"code": "E",
+"name": "Weeks",
+"hc": 13
+}
+],
+"labels": {
+"1": "Fri Front 9",
+"2": "Fri Back 9",
+"3": "Fri Third 9",
+"4": "Sat AM Front 9",
+"5": "Sat AM Back 9",
+"6": "Sat PM Front 9",
+"7": "Sat PM Back 9"
+},
+"matches": [
+{
+"m": 1,
+"label": "Fri Front 9",
+"day": "Friday",
+"two": [
+"A",
+"B"
+],
+"three": [
+"C",
+"D",
+"E"
+],
+"twoNames": [
+"keith",
+"Hicks"
+],
+"threeNames": [
+"Joe",
+"Tusc",
+"Weeks"
+],
+"drops": {
+"147": "E",
+"258": "D",
+"369": "C"
+},
+"bonus": {
+"dbl": 6,
+"best": 2,
+"worst": 5
+},
+"fixed": false
+},
+{
+"m": 2,
+"label": "Fri Back 9",
+"day": "Friday",
+"two": [
+"A",
+"C"
+],
+"three": [
+"B",
+"D",
+"E"
+],
+"twoNames": [
+"keith",
+"Joe"
+],
+"threeNames": [
+"Hicks",
+"Tusc",
+"Weeks"
+],
+"drops": {
+"147": "E",
+"258": "D",
+"369": "B"
+},
+"bonus": {
+"dbl": 3,
+"best": 9,
+"worst": 8
+},
+"fixed": false
+},
+{
+"m": 3,
+"label": "Fri Third 9",
+"day": "Friday",
+"two": [
+"A",
+"D"
+],
+"three": [
+"B",
+"C",
+"E"
+],
+"twoNames": [
+"keith",
+"Tusc"
+],
+"threeNames": [
+"Hicks",
+"Joe",
+"Weeks"
+],
+"drops": {
+"147": "E",
+"258": "C",
+"369": "B"
+},
+"bonus": {
+"dbl": 3,
+"best": 2,
+"worst": 1
+},
+"fixed": true
+},
+{
+"m": 4,
+"label": "Sat AM Front 9",
+"day": "Saturday",
+"two": [
+"A",
+"E"
+],
+"three": [
+"B",
+"C",
+"D"
+],
+"twoNames": [
+"keith",
+"Weeks"
+],
+"threeNames": [
+"Hicks",
+"Joe",
+"Tusc"
+],
+"drops": {
+"147": "D",
+"258": "C",
+"369": "B"
+},
+"bonus": {
+"dbl": 3,
+"best": 6,
+"worst": 9
+},
+"fixed": false
+},
+{
+"m": 5,
+"label": "Sat AM Back 9",
+"day": "Saturday",
+"two": [
+"B",
+"E"
+],
+"three": [
+"A",
+"C",
+"D"
+],
+"twoNames": [
+"Hicks",
+"Weeks"
+],
+"threeNames": [
+"keith",
+"Joe",
+"Tusc"
+],
+"drops": {
+"147": "D",
+"258": "C",
+"369": "A"
+},
+"bonus": {
+"dbl": 3,
+"best": 6,
+"worst": 7
+},
+"fixed": false
+},
+{
+"m": 6,
+"label": "Sat PM Front 9",
+"day": "Saturday",
+"two": [
+"B",
+"D"
+],
+"three": [
+"A",
+"C",
+"E"
+],
+"twoNames": [
+"Hicks",
+"Tusc"
+],
+"threeNames": [
+"keith",
+"Joe",
+"Weeks"
+],
+"drops": {
+"147": "E",
+"258": "C",
+"369": "A"
+},
+"bonus": {
+"dbl": 7,
+"best": 4,
+"worst": 9
+},
+"fixed": false
+},
+{
+"m": 7,
+"label": "Sat PM Back 9",
+"day": "Saturday",
+"two": [
+"D",
+"E"
+],
+"three": [
+"A",
+"B",
+"C"
+],
+"twoNames": [
+"Tusc",
+"Weeks"
+],
+"threeNames": [
+"keith",
+"Hicks",
+"Joe"
+],
+"drops": {
+"147": "C",
+"258": "B",
+"369": "A"
+},
+"bonus": {
+"dbl": 1,
+"best": 9,
+"worst": 3
+},
+"fixed": false
+}
+],
+"course": {
+"1_1": {
+"par": 5,
+"si": 13
+},
+"1_2": {
+"par": 3,
+"si": 9
+},
+"1_3": {
+"par": 4,
+"si": 17
+},
+"1_4": {
+"par": 4,
+"si": 15
+},
+"1_5": {
+"par": 4,
+"si": 5
+},
+"1_6": {
+"par": 3,
+"si": 11
+},
+"1_7": {
+"par": 5,
+"si": 7
+},
+"1_8": {
+"par": 4,
+"si": 3
+},
+"1_9": {
+"par": 4,
+"si": 1
+},
+"2_1": {
+"par": 4,
+"si": 2
+},
+"2_2": {
+"par": 4,
+"si": 4
+},
+"2_3": {
+"par": 5,
+"si": 6
+},
+"2_4": {
+"par": 4,
+"si": 16
+},
+"2_5": {
+"par": 3,
+"si": 14
+},
+"2_6": {
+"par": 5,
+"si": 12
+},
+"2_7": {
+"par": 4,
+"si": 18
+},
+"2_8": {
+"par": 3,
+"si": 10
+},
+"2_9": {
+"par": 4,
+"si": 8
+},
+"3_1": {
+"par": 5,
+"si": 13
+},
+"3_2": {
+"par": 3,
+"si": 9
+},
+"3_3": {
+"par": 4,
+"si": 17
+},
+"3_4": {
+"par": 4,
+"si": 15
+},
+"3_5": {
+"par": 4,
+"si": 5
+},
+"3_6": {
+"par": 3,
+"si": 11
+},
+"3_7": {
+"par": 5,
+"si": 7
+},
+"3_8": {
+"par": 4,
+"si": 3
+},
+"3_9": {
+"par": 4,
+"si": 1
+},
+"4_1": {
+"par": 5,
+"si": 13
+},
+"4_2": {
+"par": 3,
+"si": 9
+},
+"4_3": {
+"par": 4,
+"si": 17
+},
+"4_4": {
+"par": 4,
+"si": 15
+},
+"4_5": {
+"par": 4,
+"si": 5
+},
+"4_6": {
+"par": 3,
+"si": 11
+},
+"4_7": {
+"par": 5,
+"si": 7
+},
+"4_8": {
+"par": 4,
+"si": 3
+},
+"4_9": {
+"par": 4,
+"si": 1
+},
+"5_1": {
+"par": 4,
+"si": 2
+},
+"5_2": {
+"par": 4,
+"si": 4
+},
+"5_3": {
+"par": 5,
+"si": 6
+},
+"5_4": {
+"par": 4,
+"si": 16
+},
+"5_5": {
+"par": 3,
+"si": 14
+},
+"5_6": {
+"par": 5,
+"si": 12
+},
+"5_7": {
+"par": 4,
+"si": 18
+},
+"5_8": {
+"par": 3,
+"si": 10
+},
+"5_9": {
+"par": 4,
+"si": 8
+},
+"6_1": {
+"par": 5,
+"si": 13
+},
+"6_2": {
+"par": 3,
+"si": 9
+},
+"6_3": {
+"par": 4,
+"si": 17
+},
+"6_4": {
+"par": 4,
+"si": 15
+},
+"6_5": {
+"par": 4,
+"si": 5
+},
+"6_6": {
+"par": 3,
+"si": 11
+},
+"6_7": {
+"par": 5,
+"si": 7
+},
+"6_8": {
+"par": 4,
+"si": 3
+},
+"6_9": {
+"par": 4,
+"si": 1
+},
+"7_1": {
+"par": 4,
+"si": 2
+},
+"7_2": {
+"par": 4,
+"si": 4
+},
+"7_3": {
+"par": 5,
+"si": 6
+},
+"7_4": {
+"par": 4,
+"si": 16
+},
+"7_5": {
+"par": 3,
+"si": 14
+},
+"7_6": {
+"par": 5,
+"si": 12
+},
+"7_7": {
+"par": 4,
+"si": 18
+},
+"7_8": {
+"par": 3,
+"si": 10
+},
+"7_9": {
+"par": 4,
+"si": 8
+}
+},
+"scorecard": {
+"1": {
+"A": [
+{
+"h": 1,
+"par": 5,
+"si": 13,
+"gross": 5,
+"strk": 0,
+"net": 5,
+"pts": 2,
+"gd": 0,
+"nd": 0,
+"gcat": "par",
+"ncat": "par",
+"bonus": false
+},
+{
+"h": 2,
+"par": 3,
+"si": 9,
+"gross": 4,
+"strk": 1,
+"net": 3,
+"pts": 2,
+"gd": 1,
+"nd": 0,
+"gcat": "bogey",
+"ncat": "par",
+"bonus": false
+},
+{
+"h": 3,
+"par": 4,
+"si": 17,
+"gross": 5,
+"strk": 0,
+"net": 5,
+"pts": 1,
+"gd": 1,
+"nd": 1,
+"gcat": "bogey",
+"ncat": "bogey",
+"bonus": false
+},
+{
+"h": 4,
+"par": 4,
+"si": 15,
+"gross": 6,
+"strk": 0,
+"net": 6,
+"pts": 0,
+"gd": 2,
+"nd": 2,
+"gcat": "double",
+"ncat": "double",
+"bonus": false
+},
+{
+"h": 5,
+"par": 4,
+"si": 5,
+"gross": 5,
+"strk": 1,
+"net": 4,
+"pts": 2,
+"gd": 1,
+"nd": 0,
+"gcat": "bogey",
+"ncat": "par",
+"bonus": false
+},
+{
+"h": 6,
+"par": 3,
+"si": 11,
+"gross": 4,
+"strk": 1,
+"net": 3,
+"pts": 4,
+"gd": 1,
+"nd": 0,
+"gcat": "bogey",
+"ncat": "par",
+"bonus": true
+},
+{
+"h": 7,
+"par": 5,
+"si": 7,
+"gross": 6,
+"strk": 1,
+"net": 5,
+"pts": 2,
+"gd": 1,
+"nd": 0,
+"gcat": "bogey",
+"ncat": "par",
+"bonus": false
+},
+{
+"h": 8,
+"par": 4,
+"si": 3,
+"gross": 5,
+"strk": 1,
+"net": 4,
+"pts": 2,
+"gd": 1,
+"nd": 0,
+"gcat": "bogey",
+"ncat": "par",
+"bonus": false
+},
+{
+"h": 9,
+"par": 4,
+"si": 1,
+"gross": 5,
+"strk": 1,
+"net": 4,
+"pts": 2,
+"gd": 1,
+"nd": 0,
+"gcat": "bogey",
+"ncat": "par",
+"bonus": false
+}
+],
+"B": [
+{
+"h": 1,
+"par": 5,
+"si": 13,
+"gross": 6,
+"strk": 1,
+"net": 5,
+"pts": 2,
+"gd": 1,
+"nd": 0,
+"gcat": "bogey",
+"ncat": "par",
+"bonus": false
+},
+{
+"h": 2,
+"par": 3,
+"si": 9,
+"gross": 5,
+"strk": 1,
+"net": 4,
+"pts": 1,
+"gd": 2,
+"nd": 1,
+"gcat": "double",
+"ncat": "bogey",
+"bonus": false
+},
+{
+"h": 3,
+"par": 4,
+"si": 17,
+"gross": 5,
+"strk": 1,
+"net": 4,
+"pts": 2,
+"gd": 1,
+"nd": 0,
+"gcat": "bogey",
+"ncat": "par",
+"bonus": false
+},
+{
+"h": 4,
+"par": 4,
+"si": 15,
+"gross": 4,
+"strk": 1,
+"net": 3,
+"pts": 4,
+"gd": 0,
+"nd": -1,
+"gcat": "par",
+"ncat": "birdie",
+"bonus": false
+},
+{
+"h": 5,
+"par": 4,
+"si": 5,
+"gross": 7,
+"strk": 1,
+"net": 6,
+"pts": 0,
+"gd": 3,
+"nd": 2,
+"gcat": "double",
+"ncat": "double",
+"bonus": false
+},
+{
+"h": 6,
+"par": 3,
+"si": 11,
+"gross": 5,
+"strk": 1,
+"net": 4,
+"pts": 2,
+"gd": 2,
+"nd": 1,
+"gcat": "double",
+"ncat": "bogey",
+"bonus": true
+},
+{
+"h": 7,
+"par": 5,
+"si": 7,
+"gross": 6,
+"strk": 1,
+"net": 5,
+"pts": 2,
+"gd": 1,
+"nd": 0,
+"gcat": "bogey",
+"ncat": "par",
+"bonus": false
+},
+{
+"h": 8,
+"par": 4,
+"si": 3,
+"gross": 6,
+"strk": 2,
+"net": 4,
+"pts": 2,
+"gd": 2,
+"nd": 0,
+"gcat": "double",
+"ncat": "par",
+"bonus": false
+},
+{
+"h": 9,
+"par": 4,
+"si": 1,
+"gross": 6,
+"strk": 2,
+"net": 4,
+"pts": 2,
+"gd": 2,
+"nd": 0,
+"gcat": "double",
+"ncat": "par",
+"bonus": false
+}
+],
+"C": [
+{
+"h": 1,
+"par": 5,
+"si": 13,
+"gross": 4,
+"strk": 1,
+"net": 3,
+"pts": 8,
+"gd": -1,
+"nd": -2,
+"gcat": "birdie",
+"ncat": "eagle",
+"bonus": false
+},
+{
+"h": 2,
+"par": 3,
+"si": 9,
+"gross": 5,
+"strk": 1,
+"net": 4,
+"pts": 1,
+"gd": 2,
+"nd": 1,
+"gcat": "double",
+"ncat": "bogey",
+"bonus": false
+},
+{
+"h": 3,
+"par": 4,
+"si": 17,
+"gross": 5,
+"strk": 1,
+"net": 4,
+"pts": 2,
+"gd": 1,
+"nd": 0,
+"gcat": "bogey",
+"ncat": "par",
+"bonus": false
+},
+{
+"h": 4,
+"par": 4,
+"si": 15,
+"gross": 5,
+"strk": 1,
+"net": 4,
+"pts": 2,
+"gd": 1,
+"nd": 0,
+"gcat": "bogey",
+"ncat": "par",
+"bonus": false
+},
+{
+"h": 5,
+"par": 4,
+"si": 5,
+"gross": 6,
+"strk": 1,
+"net": 5,
+"pts": 1,
+"gd": 2,
+"nd": 1,
+"gcat": "double",
+"ncat": "bogey",
+"bonus": false
+},
+{
+"h": 6,
+"par": 3,
+"si": 11,
+"gross": 5,
+"strk": 1,
+"net": 4,
+"pts": 2,
+"gd": 2,
+"nd": 1,
+"gcat": "double",
+"ncat": "bogey",
+"bonus": true
+},
+{
+"h": 7,
+"par": 5,
+"si": 7,
+"gross": 8,
+"strk": 1,
+"net": 7,
+"pts": 0,
+"gd": 3,
+"nd": 2,
+"gcat": "double",
+"ncat": "double",
+"bonus": false
+},
+{
+"h": 8,
+"par": 4,
+"si": 3,
+"gross": 5,
+"strk": 1,
+"net": 4,
+"pts": 2,
+"gd": 1,
+"nd": 0,
+"gcat": "bogey",
+"ncat": "par",
+"bonus": false
+},
+{
+"h": 9,
+"par": 4,
+"si": 1,
+"gross": 5,
+"strk": 2,
+"net": 3,
+"pts": 4,
+"gd": 1,
+"nd": -1,
+"gcat": "bogey",
+"ncat": "birdie",
+"bonus": false
+}
+],
+"D": [
+{
+"h": 1,
+"par": 5,
+"si": 13,
+"gross": 6,
+"strk": 0,
+"net": 6,
+"pts": 1,
+"gd": 1,
+"nd": 1,
+"gcat": "bogey",
+"ncat": "bogey",
+"bonus": false
+},
+{
+"h": 2,
+"par": 3,
+"si": 9,
+"gross": 4,
+"strk": 1,
+"net": 3,
+"pts": 2,
+"gd": 1,
+"nd": 0,
+"gcat": "bogey",
+"ncat": "par",
+"bonus": false
+},
+{
+"h": 3,
+"par": 4,
+"si": 17,
+"gross": 4,
+"strk": 0,
+"net": 4,
+"pts": 2,
+"gd": 0,
+"nd": 0,
+"gcat": "par",
+"ncat": "par",
+"bonus": false
+},
+{
+"h": 4,
+"par": 4,
+"si": 15,
+"gross": 5,
+"strk": 0,
+"net": 5,
+"pts": 1,
+"gd": 1,
+"nd": 1,
+"gcat": "bogey",
+"ncat": "bogey",
+"bonus": false
+},
+{
+"h": 5,
+"par": 4,
+"si": 5,
+"gross": 5,
+"strk": 1,
+"net": 4,
+"pts": 2,
+"gd": 1,
+"nd": 0,
+"gcat": "bogey",
+"ncat": "par",
+"bonus": false
+},
+{
+"h": 6,
+"par": 3,
+"si": 11,
+"gross": 3,
+"strk": 0,
+"net": 3,
+"pts": 4,
+"gd": 0,
+"nd": 0,
+"gcat": "par",
+"ncat": "par",
+"bonus": true
+},
+{
+"h": 7,
+"par": 5,
+"si": 7,
+"gross": 6,
+"strk": 1,
+"net": 5,
+"pts": 2,
+"gd": 1,
+"nd": 0,
+"gcat": "bogey",
+"ncat": "par",
+"bonus": false
+},
+{
+"h": 8,
+"par": 4,
+"si": 3,
+"gross": 6,
+"strk": 1,
+"net": 5,
+"pts": 1,
+"gd": 2,
+"nd": 1,
+"gcat": "double",
+"ncat": "bogey",
+"bonus": false
+},
+{
+"h": 9,
+"par": 4,
+"si": 1,
+"gross": 8,
+"strk": 1,
+"net": 7,
+"pts": 0,
+"gd": 4,
+"nd": 3,
+"gcat": "double",
+"ncat": "double",
+"bonus": false
+}
+],
+"E": [
+{
+"h": 1,
+"par": 5,
+"si": 13,
+"gross": 7,
+"strk": 1,
+"net": 6,
+"pts": 1,
+"gd": 2,
+"nd": 1,
+"gcat": "double",
+"ncat": "bogey",
+"bonus": false
+},
+{
+"h": 2,
+"par": 3,
+"si": 9,
+"gross": 3,
+"strk": 1,
+"net": 2,
+"pts": 4,
+"gd": 0,
+"nd": -1,
+"gcat": "par",
+"ncat": "birdie",
+"bonus": false
+},
+{
+"h": 3,
+"par": 4,
+"si": 17,
+"gross": 4,
+"strk": 0,
+"net": 4,
+"pts": 2,
+"gd": 0,
+"nd": 0,
+"gcat": "par",
+"ncat": "par",
+"bonus": false
+},
+{
+"h": 4,
+"par": 4,
+"si": 15,
+"gross": 5,
+"strk": 0,
+"net": 5,
+"pts": 1,
+"gd": 1,
+"nd": 1,
+"gcat": "bogey",
+"ncat": "bogey",
+"bonus": false
+},
+{
+"h": 5,
+"par": 4,
+"si": 5,
+"gross": 7,
+"strk": 1,
+"net": 6,
+"pts": 0,
+"gd": 3,
+"nd": 2,
+"gcat": "double",
+"ncat": "double",
+"bonus": false
+},
+{
+"h": 6,
+"par": 3,
+"si": 11,
+"gross": 4,
+"strk": 1,
+"net": 3,
+"pts": 4,
+"gd": 1,
+"nd": 0,
+"gcat": "bogey",
+"ncat": "par",
+"bonus": true
+},
+{
+"h": 7,
+"par": 5,
+"si": 7,
+"gross": 7,
+"strk": 1,
+"net": 6,
+"pts": 1,
+"gd": 2,
+"nd": 1,
+"gcat": "double",
+"ncat": "bogey",
+"bonus": false
+},
+{
+"h": 8,
+"par": 4,
+"si": 3,
+"gross": 7,
+"strk": 1,
+"net": 6,
+"pts": 0,
+"gd": 3,
+"nd": 2,
+"gcat": "double",
+"ncat": "double",
+"bonus": false
+},
+{
+"h": 9,
+"par": 4,
+"si": 1,
+"gross": 5,
+"strk": 1,
+"net": 4,
+"pts": 2,
+"gd": 1,
+"nd": 0,
+"gcat": "bogey",
+"ncat": "par",
+"bonus": false
+}
+]
+},
+"2": {
+"A": [
+{
+"h": 1,
+"par": 4,
+"si": 2,
+"gross": 6,
+"strk": 1,
+"net": 5,
+"pts": 1,
+"gd": 2,
+"nd": 1,
+"gcat": "double",
+"ncat": "bogey",
+"bonus": false
+},
+{
+"h": 2,
+"par": 4,
+"si": 4,
+"gross": 7,
+"strk": 1,
+"net": 6,
+"pts": 0,
+"gd": 3,
+"nd": 2,
+"gcat": "double",
+"ncat": "double",
+"bonus": false
+},
+{
+"h": 3,
+"par": 5,
+"si": 6,
+"gross": 5,
+"strk": 1,
+"net": 4,
+"pts": 8,
+"gd": 0,
+"nd": -1,
+"gcat": "par",
+"ncat": "birdie",
+"bonus": true
+},
+{
+"h": 4,
+"par": 4,
+"si": 16,
+"gross": 4,
+"strk": 0,
+"net": 4,
+"pts": 2,
+"gd": 0,
+"nd": 0,
+"gcat": "par",
+"ncat": "par",
+"bonus": false
+},
+{
+"h": 5,
+"par": 3,
+"si": 14,
+"gross": 5,
+"strk": 0,
+"net": 5,
+"pts": 0,
+"gd": 2,
+"nd": 2,
+"gcat": "double",
+"ncat": "double",
+"bonus": false
+},
+{
+"h": 6,
+"par": 5,
+"si": 12,
+"gross": 7,
+"strk": 0,
+"net": 7,
+"pts": 0,
+"gd": 2,
+"nd": 2,
+"gcat": "double",
+"ncat": "double",
+"bonus": false
+},
+{
+"h": 7,
+"par": 4,
+"si": 18,
+"gross": 4,
+"strk": 0,
+"net": 4,
+"pts": 2,
+"gd": 0,
+"nd": 0,
+"gcat": "par",
+"ncat": "par",
+"bonus": false
+},
+{
+"h": 8,
+"par": 3,
+"si": 10,
+"gross": 4,
+"strk": 1,
+"net": 3,
+"pts": 2,
+"gd": 1,
+"nd": 0,
+"gcat": "bogey",
+"ncat": "par",
+"bonus": false
+},
+{
+"h": 9,
+"par": 4,
+"si": 8,
+"gross": 3,
+"strk": 1,
+"net": 2,
+"pts": 8,
+"gd": -1,
+"nd": -2,
+"gcat": "birdie",
+"ncat": "eagle",
+"bonus": false
+}
+],
+"B": [
+{
+"h": 1,
+"par": 4,
+"si": 2,
+"gross": 7,
+"strk": 2,
+"net": 5,
+"pts": 1,
+"gd": 3,
+"nd": 1,
+"gcat": "double",
+"ncat": "bogey",
+"bonus": false
+},
+{
+"h": 2,
+"par": 4,
+"si": 4,
+"gross": 6,
+"strk": 1,
+"net": 5,
+"pts": 1,
+"gd": 2,
+"nd": 1,
+"gcat": "double",
+"ncat": "bogey",
+"bonus": false
+},
+{
+"h": 3,
+"par": 5,
+"si": 6,
+"gross": 6,
+"strk": 1,
+"net": 5,
+"pts": 4,
+"gd": 1,
+"nd": 0,
+"gcat": "bogey",
+"ncat": "par",
+"bonus": true
+},
+{
+"h": 4,
+"par": 4,
+"si": 16,
+"gross": 5,
+"strk": 1,
+"net": 4,
+"pts": 2,
+"gd": 1,
+"nd": 0,
+"gcat": "bogey",
+"ncat": "par",
+"bonus": false
+},
+{
+"h": 5,
+"par": 3,
+"si": 14,
+"gross": 3,
+"strk": 1,
+"net": 2,
+"pts": 4,
+"gd": 0,
+"nd": -1,
+"gcat": "par",
+"ncat": "birdie",
+"bonus": false
+},
+{
+"h": 6,
+"par": 5,
+"si": 12,
+"gross": 7,
+"strk": 1,
+"net": 6,
+"pts": 1,
+"gd": 2,
+"nd": 1,
+"gcat": "double",
+"ncat": "bogey",
+"bonus": false
+},
+{
+"h": 7,
+"par": 4,
+"si": 18,
+"gross": 6,
+"strk": 1,
+"net": 5,
+"pts": 1,
+"gd": 2,
+"nd": 1,
+"gcat": "double",
+"ncat": "bogey",
+"bonus": false
+},
+{
+"h": 8,
+"par": 3,
+"si": 10,
+"gross": 6,
+"strk": 1,
+"net": 5,
+"pts": 0,
+"gd": 3,
+"nd": 2,
+"gcat": "double",
+"ncat": "double",
+"bonus": false
+},
+{
+"h": 9,
+"par": 4,
+"si": 8,
+"gross": 7,
+"strk": 1,
+"net": 6,
+"pts": 0,
+"gd": 3,
+"nd": 2,
+"gcat": "double",
+"ncat": "double",
+"bonus": false
+}
+],
+"C": [
+{
+"h": 1,
+"par": 4,
+"si": 2,
+"gross": 5,
+"strk": 1,
+"net": 4,
+"pts": 2,
+"gd": 1,
+"nd": 0,
+"gcat": "bogey",
+"ncat": "par",
+"bonus": false
+},
+{
+"h": 2,
+"par": 4,
+"si": 4,
+"gross": 5,
+"strk": 1,
+"net": 4,
+"pts": 2,
+"gd": 1,
+"nd": 0,
+"gcat": "bogey",
+"ncat": "par",
+"bonus": false
+},
+{
+"h": 3,
+"par": 5,
+"si": 6,
+"gross": 6,
+"strk": 1,
+"net": 5,
+"pts": 4,
+"gd": 1,
+"nd": 0,
+"gcat": "bogey",
+"ncat": "par",
+"bonus": true
+},
+{
+"h": 4,
+"par": 4,
+"si": 16,
+"gross": 4,
+"strk": 1,
+"net": 3,
+"pts": 4,
+"gd": 0,
+"nd": -1,
+"gcat": "par",
+"ncat": "birdie",
+"bonus": false
+},
+{
+"h": 5,
+"par": 3,
+"si": 14,
+"gross": 3,
+"strk": 1,
+"net": 2,
+"pts": 4,
+"gd": 0,
+"nd": -1,
+"gcat": "par",
+"ncat": "birdie",
+"bonus": false
+},
+{
+"h": 6,
+"par": 5,
+"si": 12,
+"gross": 5,
+"strk": 1,
+"net": 4,
+"pts": 4,
+"gd": 0,
+"nd": -1,
+"gcat": "par",
+"ncat": "birdie",
+"bonus": false
+},
+{
+"h": 7,
+"par": 4,
+"si": 18,
+"gross": 5,
+"strk": 1,
+"net": 4,
+"pts": 2,
+"gd": 1,
+"nd": 0,
+"gcat": "bogey",
+"ncat": "par",
+"bonus": false
+},
+{
+"h": 8,
+"par": 3,
+"si": 10,
+"gross": 3,
+"strk": 1,
+"net": 2,
+"pts": 4,
+"gd": 0,
+"nd": -1,
+"gcat": "par",
+"ncat": "birdie",
+"bonus": false
+},
+{
+"h": 9,
+"par": 4,
+"si": 8,
+"gross": 5,
+"strk": 1,
+"net": 4,
+"pts": 2,
+"gd": 1,
+"nd": 0,
+"gcat": "bogey",
+"ncat": "par",
+"bonus": false
+}
+],
+"D": [
+{
+"h": 1,
+"par": 4,
+"si": 2,
+"gross": 5,
+"strk": 1,
+"net": 4,
+"pts": 2,
+"gd": 1,
+"nd": 0,
+"gcat": "bogey",
+"ncat": "par",
+"bonus": false
+},
+{
+"h": 2,
+"par": 4,
+"si": 4,
+"gross": 5,
+"strk": 1,
+"net": 4,
+"pts": 2,
+"gd": 1,
+"nd": 0,
+"gcat": "bogey",
+"ncat": "par",
+"bonus": false
+},
+{
+"h": 3,
+"par": 5,
+"si": 6,
+"gross": 5,
+"strk": 1,
+"net": 4,
+"pts": 8,
+"gd": 0,
+"nd": -1,
+"gcat": "par",
+"ncat": "birdie",
+"bonus": true
+},
+{
+"h": 4,
+"par": 4,
+"si": 16,
+"gross": 4,
+"strk": 0,
+"net": 4,
+"pts": 2,
+"gd": 0,
+"nd": 0,
+"gcat": "par",
+"ncat": "par",
+"bonus": false
+},
+{
+"h": 5,
+"par": 3,
+"si": 14,
+"gross": 4,
+"strk": 0,
+"net": 4,
+"pts": 1,
+"gd": 1,
+"nd": 1,
+"gcat": "bogey",
+"ncat": "bogey",
+"bonus": false
+},
+{
+"h": 6,
+"par": 5,
+"si": 12,
+"gross": 6,
+"strk": 0,
+"net": 6,
+"pts": 1,
+"gd": 1,
+"nd": 1,
+"gcat": "bogey",
+"ncat": "bogey",
+"bonus": false
+},
+{
+"h": 7,
+"par": 4,
+"si": 18,
+"gross": 4,
+"strk": 0,
+"net": 4,
+"pts": 2,
+"gd": 0,
+"nd": 0,
+"gcat": "par",
+"ncat": "par",
+"bonus": false
+},
+{
+"h": 8,
+"par": 3,
+"si": 10,
+"gross": 4,
+"strk": 0,
+"net": 4,
+"pts": 1,
+"gd": 1,
+"nd": 1,
+"gcat": "bogey",
+"ncat": "bogey",
+"bonus": false
+},
+{
+"h": 9,
+"par": 4,
+"si": 8,
+"gross": 5,
+"strk": 1,
+"net": 4,
+"pts": 2,
+"gd": 1,
+"nd": 0,
+"gcat": "bogey",
+"ncat": "par",
+"bonus": false
+}
+],
+"E": [
+{
+"h": 1,
+"par": 4,
+"si": 2,
+"gross": 6,
+"strk": 1,
+"net": 5,
+"pts": 1,
+"gd": 2,
+"nd": 1,
+"gcat": "double",
+"ncat": "bogey",
+"bonus": false
+},
+{
+"h": 2,
+"par": 4,
+"si": 4,
+"gross": 7,
+"strk": 1,
+"net": 6,
+"pts": 0,
+"gd": 3,
+"nd": 2,
+"gcat": "double",
+"ncat": "double",
+"bonus": false
+},
+{
+"h": 3,
+"par": 5,
+"si": 6,
+"gross": 5,
+"strk": 1,
+"net": 4,
+"pts": 8,
+"gd": 0,
+"nd": -1,
+"gcat": "par",
+"ncat": "birdie",
+"bonus": true
+},
+{
+"h": 4,
+"par": 4,
+"si": 16,
+"gross": 4,
+"strk": 0,
+"net": 4,
+"pts": 2,
+"gd": 0,
+"nd": 0,
+"gcat": "par",
+"ncat": "par",
+"bonus": false
+},
+{
+"h": 5,
+"par": 3,
+"si": 14,
+"gross": 6,
+"strk": 0,
+"net": 6,
+"pts": 0,
+"gd": 3,
+"nd": 3,
+"gcat": "double",
+"ncat": "double",
+"bonus": false
+},
+{
+"h": 6,
+"par": 5,
+"si": 12,
+"gross": 5,
+"strk": 1,
+"net": 4,
+"pts": 4,
+"gd": 0,
+"nd": -1,
+"gcat": "par",
+"ncat": "birdie",
+"bonus": false
+},
+{
+"h": 7,
+"par": 4,
+"si": 18,
+"gross": 4,
+"strk": 0,
+"net": 4,
+"pts": 2,
+"gd": 0,
+"nd": 0,
+"gcat": "par",
+"ncat": "par",
+"bonus": false
+},
+{
+"h": 8,
+"par": 3,
+"si": 10,
+"gross": 3,
+"strk": 1,
+"net": 2,
+"pts": 4,
+"gd": 0,
+"nd": -1,
+"gcat": "par",
+"ncat": "birdie",
+"bonus": false
+},
+{
+"h": 9,
+"par": 4,
+"si": 8,
+"gross": 3,
+"strk": 1,
+"net": 2,
+"pts": 8,
+"gd": -1,
+"nd": -2,
+"gcat": "birdie",
+"ncat": "eagle",
+"bonus": false
+}
+]
+},
+"3": {
+"A": [
+{
+"h": 1,
+"par": 5,
+"si": 13,
+"gross": 5,
+"strk": 0,
+"net": 5,
+"pts": 2,
+"gd": 0,
+"nd": 0,
+"gcat": "par",
+"ncat": "par",
+"bonus": false
+},
+{
+"h": 2,
+"par": 3,
+"si": 9,
+"gross": 3,
+"strk": 1,
+"net": 2,
+"pts": 4,
+"gd": 0,
+"nd": -1,
+"gcat": "par",
+"ncat": "birdie",
+"bonus": false
+},
+{
+"h": 3,
+"par": 4,
+"si": 17,
+"gross": 6,
+"strk": 0,
+"net": 6,
+"pts": 0,
+"gd": 2,
+"nd": 2,
+"gcat": "double",
+"ncat": "double",
+"bonus": true
+},
+{
+"h": 4,
+"par": 4,
+"si": 15,
+"gross": 5,
+"strk": 0,
+"net": 5,
+"pts": 1,
+"gd": 1,
+"nd": 1,
+"gcat": "bogey",
+"ncat": "bogey",
+"bonus": false
+},
+{
+"h": 5,
+"par": 4,
+"si": 5,
+"gross": 6,
+"strk": 1,
+"net": 5,
+"pts": 1,
+"gd": 2,
+"nd": 1,
+"gcat": "double",
+"ncat": "bogey",
+"bonus": false
+},
+{
+"h": 6,
+"par": 3,
+"si": 11,
+"gross": 4,
+"strk": 1,
+"net": 3,
+"pts": 2,
+"gd": 1,
+"nd": 0,
+"gcat": "bogey",
+"ncat": "par",
+"bonus": false
+},
+{
+"h": 7,
+"par": 5,
+"si": 7,
+"gross": 7,
+"strk": 1,
+"net": 6,
+"pts": 1,
+"gd": 2,
+"nd": 1,
+"gcat": "double",
+"ncat": "bogey",
+"bonus": false
+},
+{
+"h": 8,
+"par": 4,
+"si": 3,
+"gross": 6,
+"strk": 1,
+"net": 5,
+"pts": 1,
+"gd": 2,
+"nd": 1,
+"gcat": "double",
+"ncat": "bogey",
+"bonus": false
+},
+{
+"h": 9,
+"par": 4,
+"si": 1,
+"gross": 4,
+"strk": 1,
+"net": 3,
+"pts": 4,
+"gd": 0,
+"nd": -1,
+"gcat": "par",
+"ncat": "birdie",
+"bonus": false
+}
+],
+"B": [
+{
+"h": 1,
+"par": 5,
+"si": 13,
+"gross": 7,
+"strk": 1,
+"net": 6,
+"pts": 1,
+"gd": 2,
+"nd": 1,
+"gcat": "double",
+"ncat": "bogey",
+"bonus": false
+},
+{
+"h": 2,
+"par": 3,
+"si": 9,
+"gross": 4,
+"strk": 1,
+"net": 3,
+"pts": 2,
+"gd": 1,
+"nd": 0,
+"gcat": "bogey",
+"ncat": "par",
+"bonus": false
+},
+{
+"h": 3,
+"par": 4,
+"si": 17,
+"gross": 3,
+"strk": 1,
+"net": 2,
+"pts": 16,
+"gd": -1,
+"nd": -2,
+"gcat": "birdie",
+"ncat": "eagle",
+"bonus": true
+},
+{
+"h": 4,
+"par": 4,
+"si": 15,
+"gross": 6,
+"strk": 1,
+"net": 5,
+"pts": 1,
+"gd": 2,
+"nd": 1,
+"gcat": "double",
+"ncat": "bogey",
+"bonus": false
+},
+{
+"h": 5,
+"par": 4,
+"si": 5,
+"gross": 5,
+"strk": 1,
+"net": 4,
+"pts": 2,
+"gd": 1,
+"nd": 0,
+"gcat": "bogey",
+"ncat": "par",
+"bonus": false
+},
+{
+"h": 6,
+"par": 3,
+"si": 11,
+"gross": 5,
+"strk": 1,
+"net": 4,
+"pts": 1,
+"gd": 2,
+"nd": 1,
+"gcat": "double",
+"ncat": "bogey",
+"bonus": false
+},
+{
+"h": 7,
+"par": 5,
+"si": 7,
+"gross": 7,
+"strk": 1,
+"net": 6,
+"pts": 1,
+"gd": 2,
+"nd": 1,
+"gcat": "double",
+"ncat": "bogey",
+"bonus": false
+},
+{
+"h": 8,
+"par": 4,
+"si": 3,
+"gross": 5,
+"strk": 2,
+"net": 3,
+"pts": 4,
+"gd": 1,
+"nd": -1,
+"gcat": "bogey",
+"ncat": "birdie",
+"bonus": false
+},
+{
+"h": 9,
+"par": 4,
+"si": 1,
+"gross": 8,
+"strk": 2,
+"net": 6,
+"pts": 0,
+"gd": 4,
+"nd": 2,
+"gcat": "double",
+"ncat": "double",
+"bonus": false
+}
+],
+"C": [
+{
+"h": 1,
+"par": 5,
+"si": 13,
+"gross": 5,
+"strk": 1,
+"net": 4,
+"pts": 4,
+"gd": 0,
+"nd": -1,
+"gcat": "par",
+"ncat": "birdie",
+"bonus": false
+},
+{
+"h": 2,
+"par": 3,
+"si": 9,
+"gross": 2,
+"strk": 1,
+"net": 1,
+"pts": 8,
+"gd": -1,
+"nd": -2,
+"gcat": "birdie",
+"ncat": "eagle",
+"bonus": false
+},
+{
+"h": 3,
+"par": 4,
+"si": 17,
+"gross": 4,
+"strk": 1,
+"net": 3,
+"pts": 8,
+"gd": 0,
+"nd": -1,
+"gcat": "par",
+"ncat": "birdie",
+"bonus": true
+},
+{
+"h": 4,
+"par": 4,
+"si": 15,
+"gross": 6,
+"strk": 1,
+"net": 5,
+"pts": 1,
+"gd": 2,
+"nd": 1,
+"gcat": "double",
+"ncat": "bogey",
+"bonus": false
+},
+{
+"h": 5,
+"par": 4,
+"si": 5,
+"gross": 5,
+"strk": 1,
+"net": 4,
+"pts": 2,
+"gd": 1,
+"nd": 0,
+"gcat": "bogey",
+"ncat": "par",
+"bonus": false
+},
+{
+"h": 6,
+"par": 3,
+"si": 11,
+"gross": 4,
+"strk": 1,
+"net": 3,
+"pts": 2,
+"gd": 1,
+"nd": 0,
+"gcat": "bogey",
+"ncat": "par",
+"bonus": false
+},
+{
+"h": 7,
+"par": 5,
+"si": 7,
+"gross": 6,
+"strk": 1,
+"net": 5,
+"pts": 2,
+"gd": 1,
+"nd": 0,
+"gcat": "bogey",
+"ncat": "par",
+"bonus": false
+},
+{
+"h": 8,
+"par": 4,
+"si": 3,
+"gross": 6,
+"strk": 1,
+"net": 5,
+"pts": 1,
+"gd": 2,
+"nd": 1,
+"gcat": "double",
+"ncat": "bogey",
+"bonus": false
+},
+{
+"h": 9,
+"par": 4,
+"si": 1,
+"gross": 8,
+"strk": 2,
+"net": 6,
+"pts": 0,
+"gd": 4,
+"nd": 2,
+"gcat": "double",
+"ncat": "double",
+"bonus": false
+}
+],
+"D": [
+{
+"h": 1,
+"par": 5,
+"si": 13,
+"gross": 5,
+"strk": 0,
+"net": 5,
+"pts": 2,
+"gd": 0,
+"nd": 0,
+"gcat": "par",
+"ncat": "par",
+"bonus": false
+},
+{
+"h": 2,
+"par": 3,
+"si": 9,
+"gross": 4,
+"strk": 1,
+"net": 3,
+"pts": 2,
+"gd": 1,
+"nd": 0,
+"gcat": "bogey",
+"ncat": "par",
+"bonus": false
+},
+{
+"h": 3,
+"par": 4,
+"si": 17,
+"gross": 4,
+"strk": 0,
+"net": 4,
+"pts": 4,
+"gd": 0,
+"nd": 0,
+"gcat": "par",
+"ncat": "par",
+"bonus": true
+},
+{
+"h": 4,
+"par": 4,
+"si": 15,
+"gross": 6,
+"strk": 0,
+"net": 6,
+"pts": 0,
+"gd": 2,
+"nd": 2,
+"gcat": "double",
+"ncat": "double",
+"bonus": false
+},
+{
+"h": 5,
+"par": 4,
+"si": 5,
+"gross": 6,
+"strk": 1,
+"net": 5,
+"pts": 1,
+"gd": 2,
+"nd": 1,
+"gcat": "double",
+"ncat": "bogey",
+"bonus": false
+},
+{
+"h": 6,
+"par": 3,
+"si": 11,
+"gross": 3,
+"strk": 0,
+"net": 3,
+"pts": 2,
+"gd": 0,
+"nd": 0,
+"gcat": "par",
+"ncat": "par",
+"bonus": false
+},
+{
+"h": 7,
+"par": 5,
+"si": 7,
+"gross": 7,
+"strk": 1,
+"net": 6,
+"pts": 1,
+"gd": 2,
+"nd": 1,
+"gcat": "double",
+"ncat": "bogey",
+"bonus": false
+},
+{
+"h": 8,
+"par": 4,
+"si": 3,
+"gross": 6,
+"strk": 1,
+"net": 5,
+"pts": 1,
+"gd": 2,
+"nd": 1,
+"gcat": "double",
+"ncat": "bogey",
+"bonus": false
+},
+{
+"h": 9,
+"par": 4,
+"si": 1,
+"gross": 4,
+"strk": 1,
+"net": 3,
+"pts": 4,
+"gd": 0,
+"nd": -1,
+"gcat": "par",
+"ncat": "birdie",
+"bonus": false
+}
+],
+"E": [
+{
+"h": 1,
+"par": 5,
+"si": 13,
+"gross": 5,
+"strk": 1,
+"net": 4,
+"pts": 4,
+"gd": 0,
+"nd": -1,
+"gcat": "par",
+"ncat": "birdie",
+"bonus": false
+},
+{
+"h": 2,
+"par": 3,
+"si": 9,
+"gross": 4,
+"strk": 1,
+"net": 3,
+"pts": 2,
+"gd": 1,
+"nd": 0,
+"gcat": "bogey",
+"ncat": "par",
+"bonus": false
+},
+{
+"h": 3,
+"par": 4,
+"si": 17,
+"gross": 5,
+"strk": 0,
+"net": 5,
+"pts": 2,
+"gd": 1,
+"nd": 1,
+"gcat": "bogey",
+"ncat": "bogey",
+"bonus": true
+},
+{
+"h": 4,
+"par": 4,
+"si": 15,
+"gross": 5,
+"strk": 0,
+"net": 5,
+"pts": 1,
+"gd": 1,
+"nd": 1,
+"gcat": "bogey",
+"ncat": "bogey",
+"bonus": false
+},
+{
+"h": 5,
+"par": 4,
+"si": 5,
+"gross": 6,
+"strk": 1,
+"net": 5,
+"pts": 1,
+"gd": 2,
+"nd": 1,
+"gcat": "double",
+"ncat": "bogey",
+"bonus": false
+},
+{
+"h": 6,
+"par": 3,
+"si": 11,
+"gross": 4,
+"strk": 1,
+"net": 3,
+"pts": 2,
+"gd": 1,
+"nd": 0,
+"gcat": "bogey",
+"ncat": "par",
+"bonus": false
+},
+{
+"h": 7,
+"par": 5,
+"si": 7,
+"gross": 6,
+"strk": 1,
+"net": 5,
+"pts": 2,
+"gd": 1,
+"nd": 0,
+"gcat": "bogey",
+"ncat": "par",
+"bonus": false
+},
+{
+"h": 8,
+"par": 4,
+"si": 3,
+"gross": 5,
+"strk": 1,
+"net": 4,
+"pts": 2,
+"gd": 1,
+"nd": 0,
+"gcat": "bogey",
+"ncat": "par",
+"bonus": false
+},
+{
+"h": 9,
+"par": 4,
+"si": 1,
+"gross": 6,
+"strk": 1,
+"net": 5,
+"pts": 1,
+"gd": 2,
+"nd": 1,
+"gcat": "double",
+"ncat": "bogey",
+"bonus": false
+}
+]
+},
+"4": {
+"A": [
+{
+"h": 1,
+"par": 5,
+"si": 13,
+"gross": 7,
+"strk": 0,
+"net": 7,
+"pts": 0,
+"gd": 2,
+"nd": 2,
+"gcat": "double",
+"ncat": "double",
+"bonus": false
+},
+{
+"h": 2,
+"par": 3,
+"si": 9,
+"gross": 3,
+"strk": 1,
+"net": 2,
+"pts": 4,
+"gd": 0,
+"nd": -1,
+"gcat": "par",
+"ncat": "birdie",
+"bonus": false
+},
+{
+"h": 3,
+"par": 4,
+"si": 17,
+"gross": 5,
+"strk": 0,
+"net": 5,
+"pts": 2,
+"gd": 1,
+"nd": 1,
+"gcat": "bogey",
+"ncat": "bogey",
+"bonus": true
+},
+{
+"h": 4,
+"par": 4,
+"si": 15,
+"gross": 4,
+"strk": 0,
+"net": 4,
+"pts": 2,
+"gd": 0,
+"nd": 0,
+"gcat": "par",
+"ncat": "par",
+"bonus": false
+},
+{
+"h": 5,
+"par": 4,
+"si": 5,
+"gross": 5,
+"strk": 1,
+"net": 4,
+"pts": 2,
+"gd": 1,
+"nd": 0,
+"gcat": "bogey",
+"ncat": "par",
+"bonus": false
+},
+{
+"h": 6,
+"par": 3,
+"si": 11,
+"gross": 3,
+"strk": 1,
+"net": 2,
+"pts": 4,
+"gd": 0,
+"nd": -1,
+"gcat": "par",
+"ncat": "birdie",
+"bonus": false
+},
+{
+"h": 7,
+"par": 5,
+"si": 7,
+"gross": 5,
+"strk": 1,
+"net": 4,
+"pts": 4,
+"gd": 0,
+"nd": -1,
+"gcat": "par",
+"ncat": "birdie",
+"bonus": false
+},
+{
+"h": 8,
+"par": 4,
+"si": 3,
+"gross": 4,
+"strk": 1,
+"net": 3,
+"pts": 4,
+"gd": 0,
+"nd": -1,
+"gcat": "par",
+"ncat": "birdie",
+"bonus": false
+},
+{
+"h": 9,
+"par": 4,
+"si": 1,
+"gross": 5,
+"strk": 1,
+"net": 4,
+"pts": 2,
+"gd": 1,
+"nd": 0,
+"gcat": "bogey",
+"ncat": "par",
+"bonus": false
+}
+],
+"B": [
+{
+"h": 1,
+"par": 5,
+"si": 13,
+"gross": 7,
+"strk": 1,
+"net": 6,
+"pts": 1,
+"gd": 2,
+"nd": 1,
+"gcat": "double",
+"ncat": "bogey",
+"bonus": false
+},
+{
+"h": 2,
+"par": 3,
+"si": 9,
+"gross": 5,
+"strk": 1,
+"net": 4,
+"pts": 1,
+"gd": 2,
+"nd": 1,
+"gcat": "double",
+"ncat": "bogey",
+"bonus": false
+},
+{
+"h": 3,
+"par": 4,
+"si": 17,
+"gross": 4,
+"strk": 1,
+"net": 3,
+"pts": 8,
+"gd": 0,
+"nd": -1,
+"gcat": "par",
+"ncat": "birdie",
+"bonus": true
+},
+{
+"h": 4,
+"par": 4,
+"si": 15,
+"gross": 6,
+"strk": 1,
+"net": 5,
+"pts": 1,
+"gd": 2,
+"nd": 1,
+"gcat": "double",
+"ncat": "bogey",
+"bonus": false
+},
+{
+"h": 5,
+"par": 4,
+"si": 5,
+"gross": 7,
+"strk": 1,
+"net": 6,
+"pts": 0,
+"gd": 3,
+"nd": 2,
+"gcat": "double",
+"ncat": "double",
+"bonus": false
+},
+{
+"h": 6,
+"par": 3,
+"si": 11,
+"gross": 4,
+"strk": 1,
+"net": 3,
+"pts": 2,
+"gd": 1,
+"nd": 0,
+"gcat": "bogey",
+"ncat": "par",
+"bonus": false
+},
+{
+"h": 7,
+"par": 5,
+"si": 7,
+"gross": 8,
+"strk": 1,
+"net": 7,
+"pts": 0,
+"gd": 3,
+"nd": 2,
+"gcat": "double",
+"ncat": "double",
+"bonus": false
+},
+{
+"h": 8,
+"par": 4,
+"si": 3,
+"gross": 8,
+"strk": 2,
+"net": 6,
+"pts": 0,
+"gd": 4,
+"nd": 2,
+"gcat": "double",
+"ncat": "double",
+"bonus": false
+},
+{
+"h": 9,
+"par": 4,
+"si": 1,
+"gross": 8,
+"strk": 2,
+"net": 6,
+"pts": 0,
+"gd": 4,
+"nd": 2,
+"gcat": "double",
+"ncat": "double",
+"bonus": false
+}
+],
+"C": [
+{
+"h": 1,
+"par": 5,
+"si": 13,
+"gross": 5,
+"strk": 1,
+"net": 4,
+"pts": 4,
+"gd": 0,
+"nd": -1,
+"gcat": "par",
+"ncat": "birdie",
+"bonus": false
+},
+{
+"h": 2,
+"par": 3,
+"si": 9,
+"gross": 6,
+"strk": 1,
+"net": 5,
+"pts": 0,
+"gd": 3,
+"nd": 2,
+"gcat": "double",
+"ncat": "double",
+"bonus": false
+},
+{
+"h": 3,
+"par": 4,
+"si": 17,
+"gross": 4,
+"strk": 1,
+"net": 3,
+"pts": 8,
+"gd": 0,
+"nd": -1,
+"gcat": "par",
+"ncat": "birdie",
+"bonus": true
+},
+{
+"h": 4,
+"par": 4,
+"si": 15,
+"gross": 4,
+"strk": 1,
+"net": 3,
+"pts": 4,
+"gd": 0,
+"nd": -1,
+"gcat": "par",
+"ncat": "birdie",
+"bonus": false
+},
+{
+"h": 5,
+"par": 4,
+"si": 5,
+"gross": 7,
+"strk": 1,
+"net": 6,
+"pts": 0,
+"gd": 3,
+"nd": 2,
+"gcat": "double",
+"ncat": "double",
+"bonus": false
+},
+{
+"h": 6,
+"par": 3,
+"si": 11,
+"gross": 3,
+"strk": 1,
+"net": 2,
+"pts": 4,
+"gd": 0,
+"nd": -1,
+"gcat": "par",
+"ncat": "birdie",
+"bonus": false
+},
+{
+"h": 7,
+"par": 5,
+"si": 7,
+"gross": 5,
+"strk": 1,
+"net": 4,
+"pts": 4,
+"gd": 0,
+"nd": -1,
+"gcat": "par",
+"ncat": "birdie",
+"bonus": false
+},
+{
+"h": 8,
+"par": 4,
+"si": 3,
+"gross": 5,
+"strk": 1,
+"net": 4,
+"pts": 2,
+"gd": 1,
+"nd": 0,
+"gcat": "bogey",
+"ncat": "par",
+"bonus": false
+},
+{
+"h": 9,
+"par": 4,
+"si": 1,
+"gross": 7,
+"strk": 2,
+"net": 5,
+"pts": 1,
+"gd": 3,
+"nd": 1,
+"gcat": "double",
+"ncat": "bogey",
+"bonus": false
+}
+],
+"D": [
+{
+"h": 1,
+"par": 5,
+"si": 13,
+"gross": 6,
+"strk": 0,
+"net": 6,
+"pts": 1,
+"gd": 1,
+"nd": 1,
+"gcat": "bogey",
+"ncat": "bogey",
+"bonus": false
+},
+{
+"h": 2,
+"par": 3,
+"si": 9,
+"gross": 3,
+"strk": 1,
+"net": 2,
+"pts": 4,
+"gd": 0,
+"nd": -1,
+"gcat": "par",
+"ncat": "birdie",
+"bonus": false
+},
+{
+"h": 3,
+"par": 4,
+"si": 17,
+"gross": 5,
+"strk": 0,
+"net": 5,
+"pts": 2,
+"gd": 1,
+"nd": 1,
+"gcat": "bogey",
+"ncat": "bogey",
+"bonus": true
+},
+{
+"h": 4,
+"par": 4,
+"si": 15,
+"gross": 5,
+"strk": 0,
+"net": 5,
+"pts": 1,
+"gd": 1,
+"nd": 1,
+"gcat": "bogey",
+"ncat": "bogey",
+"bonus": false
+},
+{
+"h": 5,
+"par": 4,
+"si": 5,
+"gross": 7,
+"strk": 1,
+"net": 6,
+"pts": 0,
+"gd": 3,
+"nd": 2,
+"gcat": "double",
+"ncat": "double",
+"bonus": false
+},
+{
+"h": 6,
+"par": 3,
+"si": 11,
+"gross": 5,
+"strk": 0,
+"net": 5,
+"pts": 0,
+"gd": 2,
+"nd": 2,
+"gcat": "double",
+"ncat": "double",
+"bonus": false
+},
+{
+"h": 7,
+"par": 5,
+"si": 7,
+"gross": 7,
+"strk": 1,
+"net": 6,
+"pts": 1,
+"gd": 2,
+"nd": 1,
+"gcat": "double",
+"ncat": "bogey",
+"bonus": false
+},
+{
+"h": 8,
+"par": 4,
+"si": 3,
+"gross": 6,
+"strk": 1,
+"net": 5,
+"pts": 1,
+"gd": 2,
+"nd": 1,
+"gcat": "double",
+"ncat": "bogey",
+"bonus": false
+},
+{
+"h": 9,
+"par": 4,
+"si": 1,
+"gross": 7,
+"strk": 1,
+"net": 6,
+"pts": 0,
+"gd": 3,
+"nd": 2,
+"gcat": "double",
+"ncat": "double",
+"bonus": false
+}
+],
+"E": [
+{
+"h": 1,
+"par": 5,
+"si": 13,
+"gross": 7,
+"strk": 1,
+"net": 6,
+"pts": 1,
+"gd": 2,
+"nd": 1,
+"gcat": "double",
+"ncat": "bogey",
+"bonus": false
+},
+{
+"h": 2,
+"par": 3,
+"si": 9,
+"gross": 6,
+"strk": 1,
+"net": 5,
+"pts": 0,
+"gd": 3,
+"nd": 2,
+"gcat": "double",
+"ncat": "double",
+"bonus": false
+},
+{
+"h": 3,
+"par": 4,
+"si": 17,
+"gross": 5,
+"strk": 0,
+"net": 5,
+"pts": 2,
+"gd": 1,
+"nd": 1,
+"gcat": "bogey",
+"ncat": "bogey",
+"bonus": true
+},
+{
+"h": 4,
+"par": 4,
+"si": 15,
+"gross": 5,
+"strk": 0,
+"net": 5,
+"pts": 1,
+"gd": 1,
+"nd": 1,
+"gcat": "bogey",
+"ncat": "bogey",
+"bonus": false
+},
+{
+"h": 5,
+"par": 4,
+"si": 5,
+"gross": 8,
+"strk": 1,
+"net": 7,
+"pts": 0,
+"gd": 4,
+"nd": 3,
+"gcat": "double",
+"ncat": "double",
+"bonus": false
+},
+{
+"h": 6,
+"par": 3,
+"si": 11,
+"gross": 3,
+"strk": 1,
+"net": 2,
+"pts": 4,
+"gd": 0,
+"nd": -1,
+"gcat": "par",
+"ncat": "birdie",
+"bonus": false
+},
+{
+"h": 7,
+"par": 5,
+"si": 7,
+"gross": 6,
+"strk": 1,
+"net": 5,
+"pts": 2,
+"gd": 1,
+"nd": 0,
+"gcat": "bogey",
+"ncat": "par",
+"bonus": false
+},
+{
+"h": 8,
+"par": 4,
+"si": 3,
+"gross": 5,
+"strk": 1,
+"net": 4,
+"pts": 2,
+"gd": 1,
+"nd": 0,
+"gcat": "bogey",
+"ncat": "par",
+"bonus": false
+},
+{
+"h": 9,
+"par": 4,
+"si": 1,
+"gross": 4,
+"strk": 1,
+"net": 3,
+"pts": 4,
+"gd": 0,
+"nd": -1,
+"gcat": "par",
+"ncat": "birdie",
+"bonus": false
+}
+]
+},
+"5": {
+"A": [
+{
+"h": 1,
+"par": 4,
+"si": 2,
+"gross": 8,
+"strk": 1,
+"net": 7,
+"pts": 0,
+"gd": 4,
+"nd": 3,
+"gcat": "double",
+"ncat": "double",
+"bonus": false
+},
+{
+"h": 2,
+"par": 4,
+"si": 4,
+"gross": 5,
+"strk": 1,
+"net": 4,
+"pts": 2,
+"gd": 1,
+"nd": 0,
+"gcat": "bogey",
+"ncat": "par",
+"bonus": false
+},
+{
+"h": 3,
+"par": 5,
+"si": 6,
+"gross": 9,
+"strk": 1,
+"net": 8,
+"pts": 0,
+"gd": 4,
+"nd": 3,
+"gcat": "double",
+"ncat": "double",
+"bonus": true
+},
+{
+"h": 4,
+"par": 4,
+"si": 16,
+"gross": 5,
+"strk": 0,
+"net": 5,
+"pts": 1,
+"gd": 1,
+"nd": 1,
+"gcat": "bogey",
+"ncat": "bogey",
+"bonus": false
+},
+{
+"h": 5,
+"par": 3,
+"si": 14,
+"gross": 7,
+"strk": 0,
+"net": 7,
+"pts": 0,
+"gd": 4,
+"nd": 4,
+"gcat": "double",
+"ncat": "double",
+"bonus": false
+},
+{
+"h": 6,
+"par": 5,
+"si": 12,
+"gross": 8,
+"strk": 0,
+"net": 8,
+"pts": 0,
+"gd": 3,
+"nd": 3,
+"gcat": "double",
+"ncat": "double",
+"bonus": false
+},
+{
+"h": 7,
+"par": 4,
+"si": 18,
+"gross": 5,
+"strk": 0,
+"net": 5,
+"pts": 1,
+"gd": 1,
+"nd": 1,
+"gcat": "bogey",
+"ncat": "bogey",
+"bonus": false
+},
+{
+"h": 8,
+"par": 3,
+"si": 10,
+"gross": 4,
+"strk": 1,
+"net": 3,
+"pts": 2,
+"gd": 1,
+"nd": 0,
+"gcat": "bogey",
+"ncat": "par",
+"bonus": false
+},
+{
+"h": 9,
+"par": 4,
+"si": 8,
+"gross": 4,
+"strk": 1,
+"net": 3,
+"pts": 4,
+"gd": 0,
+"nd": -1,
+"gcat": "par",
+"ncat": "birdie",
+"bonus": false
+}
+],
+"B": [
+{
+"h": 1,
+"par": 4,
+"si": 2,
+"gross": 4,
+"strk": 2,
+"net": 2,
+"pts": 8,
+"gd": 0,
+"nd": -2,
+"gcat": "par",
+"ncat": "eagle",
+"bonus": false
+},
+{
+"h": 2,
+"par": 4,
+"si": 4,
+"gross": 7,
+"strk": 1,
+"net": 6,
+"pts": 0,
+"gd": 3,
+"nd": 2,
+"gcat": "double",
+"ncat": "double",
+"bonus": false
+},
+{
+"h": 3,
+"par": 5,
+"si": 6,
+"gross": 7,
+"strk": 1,
+"net": 6,
+"pts": 2,
+"gd": 2,
+"nd": 1,
+"gcat": "double",
+"ncat": "bogey",
+"bonus": true
+},
+{
+"h": 4,
+"par": 4,
+"si": 16,
+"gross": 5,
+"strk": 1,
+"net": 4,
+"pts": 2,
+"gd": 1,
+"nd": 0,
+"gcat": "bogey",
+"ncat": "par",
+"bonus": false
+},
+{
+"h": 5,
+"par": 3,
+"si": 14,
+"gross": 6,
+"strk": 1,
+"net": 5,
+"pts": 0,
+"gd": 3,
+"nd": 2,
+"gcat": "double",
+"ncat": "double",
+"bonus": false
+},
+{
+"h": 6,
+"par": 5,
+"si": 12,
+"gross": 9,
+"strk": 1,
+"net": 8,
+"pts": 0,
+"gd": 4,
+"nd": 3,
+"gcat": "double",
+"ncat": "double",
+"bonus": false
+},
+{
+"h": 7,
+"par": 4,
+"si": 18,
+"gross": 7,
+"strk": 1,
+"net": 6,
+"pts": 0,
+"gd": 3,
+"nd": 2,
+"gcat": "double",
+"ncat": "double",
+"bonus": false
+},
+{
+"h": 8,
+"par": 3,
+"si": 10,
+"gross": 3,
+"strk": 1,
+"net": 2,
+"pts": 4,
+"gd": 0,
+"nd": -1,
+"gcat": "par",
+"ncat": "birdie",
+"bonus": false
+},
+{
+"h": 9,
+"par": 4,
+"si": 8,
+"gross": 8,
+"strk": 1,
+"net": 7,
+"pts": 0,
+"gd": 4,
+"nd": 3,
+"gcat": "double",
+"ncat": "double",
+"bonus": false
+}
+],
+"C": [
+{
+"h": 1,
+"par": 4,
+"si": 2,
+"gross": 4,
+"strk": 1,
+"net": 3,
+"pts": 4,
+"gd": 0,
+"nd": -1,
+"gcat": "par",
+"ncat": "birdie",
+"bonus": false
+},
+{
+"h": 2,
+"par": 4,
+"si": 4,
+"gross": 8,
+"strk": 1,
+"net": 7,
+"pts": 0,
+"gd": 4,
+"nd": 3,
+"gcat": "double",
+"ncat": "double",
+"bonus": false
+},
+{
+"h": 3,
+"par": 5,
+"si": 6,
+"gross": 6,
+"strk": 1,
+"net": 5,
+"pts": 4,
+"gd": 1,
+"nd": 0,
+"gcat": "bogey",
+"ncat": "par",
+"bonus": true
+},
+{
+"h": 4,
+"par": 4,
+"si": 16,
+"gross": 7,
+"strk": 1,
+"net": 6,
+"pts": 0,
+"gd": 3,
+"nd": 2,
+"gcat": "double",
+"ncat": "double",
+"bonus": false
+},
+{
+"h": 5,
+"par": 3,
+"si": 14,
+"gross": 5,
+"strk": 1,
+"net": 4,
+"pts": 1,
+"gd": 2,
+"nd": 1,
+"gcat": "double",
+"ncat": "bogey",
+"bonus": false
+},
+{
+"h": 6,
+"par": 5,
+"si": 12,
+"gross": 6,
+"strk": 1,
+"net": 5,
+"pts": 2,
+"gd": 1,
+"nd": 0,
+"gcat": "bogey",
+"ncat": "par",
+"bonus": false
+},
+{
+"h": 7,
+"par": 4,
+"si": 18,
+"gross": 3,
+"strk": 1,
+"net": 2,
+"pts": 8,
+"gd": -1,
+"nd": -2,
+"gcat": "birdie",
+"ncat": "eagle",
+"bonus": false
+},
+{
+"h": 8,
+"par": 3,
+"si": 10,
+"gross": 5,
+"strk": 1,
+"net": 4,
+"pts": 1,
+"gd": 2,
+"nd": 1,
+"gcat": "double",
+"ncat": "bogey",
+"bonus": false
+},
+{
+"h": 9,
+"par": 4,
+"si": 8,
+"gross": 5,
+"strk": 1,
+"net": 4,
+"pts": 2,
+"gd": 1,
+"nd": 0,
+"gcat": "bogey",
+"ncat": "par",
+"bonus": false
+}
+],
+"D": [
+{
+"h": 1,
+"par": 4,
+"si": 2,
+"gross": 7,
+"strk": 1,
+"net": 6,
+"pts": 0,
+"gd": 3,
+"nd": 2,
+"gcat": "double",
+"ncat": "double",
+"bonus": false
+},
+{
+"h": 2,
+"par": 4,
+"si": 4,
+"gross": 5,
+"strk": 1,
+"net": 4,
+"pts": 2,
+"gd": 1,
+"nd": 0,
+"gcat": "bogey",
+"ncat": "par",
+"bonus": false
+},
+{
+"h": 3,
+"par": 5,
+"si": 6,
+"gross": 5,
+"strk": 1,
+"net": 4,
+"pts": 8,
+"gd": 0,
+"nd": -1,
+"gcat": "par",
+"ncat": "birdie",
+"bonus": true
+},
+{
+"h": 4,
+"par": 4,
+"si": 16,
+"gross": 7,
+"strk": 0,
+"net": 7,
+"pts": 0,
+"gd": 3,
+"nd": 3,
+"gcat": "double",
+"ncat": "double",
+"bonus": false
+},
+{
+"h": 5,
+"par": 3,
+"si": 14,
+"gross": 7,
+"strk": 0,
+"net": 7,
+"pts": 0,
+"gd": 4,
+"nd": 4,
+"gcat": "double",
+"ncat": "double",
+"bonus": false
+},
+{
+"h": 6,
+"par": 5,
+"si": 12,
+"gross": 5,
+"strk": 0,
+"net": 5,
+"pts": 2,
+"gd": 0,
+"nd": 0,
+"gcat": "par",
+"ncat": "par",
+"bonus": false
+},
+{
+"h": 7,
+"par": 4,
+"si": 18,
+"gross": 4,
+"strk": 0,
+"net": 4,
+"pts": 2,
+"gd": 0,
+"nd": 0,
+"gcat": "par",
+"ncat": "par",
+"bonus": false
+},
+{
+"h": 8,
+"par": 3,
+"si": 10,
+"gross": 4,
+"strk": 0,
+"net": 4,
+"pts": 1,
+"gd": 1,
+"nd": 1,
+"gcat": "bogey",
+"ncat": "bogey",
+"bonus": false
+},
+{
+"h": 9,
+"par": 4,
+"si": 8,
+"gross": 6,
+"strk": 1,
+"net": 5,
+"pts": 1,
+"gd": 2,
+"nd": 1,
+"gcat": "double",
+"ncat": "bogey",
+"bonus": false
+}
+],
+"E": [
+{
+"h": 1,
+"par": 4,
+"si": 2,
+"gross": 5,
+"strk": 1,
+"net": 4,
+"pts": 2,
+"gd": 1,
+"nd": 0,
+"gcat": "bogey",
+"ncat": "par",
+"bonus": false
+},
+{
+"h": 2,
+"par": 4,
+"si": 4,
+"gross": 7,
+"strk": 1,
+"net": 6,
+"pts": 0,
+"gd": 3,
+"nd": 2,
+"gcat": "double",
+"ncat": "double",
+"bonus": false
+},
+{
+"h": 3,
+"par": 5,
+"si": 6,
+"gross": 6,
+"strk": 1,
+"net": 5,
+"pts": 4,
+"gd": 1,
+"nd": 0,
+"gcat": "bogey",
+"ncat": "par",
+"bonus": true
+},
+{
+"h": 4,
+"par": 4,
+"si": 16,
+"gross": 5,
+"strk": 0,
+"net": 5,
+"pts": 1,
+"gd": 1,
+"nd": 1,
+"gcat": "bogey",
+"ncat": "bogey",
+"bonus": false
+},
+{
+"h": 5,
+"par": 3,
+"si": 14,
+"gross": 5,
+"strk": 0,
+"net": 5,
+"pts": 0,
+"gd": 2,
+"nd": 2,
+"gcat": "double",
+"ncat": "double",
+"bonus": false
+},
+{
+"h": 6,
+"par": 5,
+"si": 12,
+"gross": 5,
+"strk": 1,
+"net": 4,
+"pts": 4,
+"gd": 0,
+"nd": -1,
+"gcat": "par",
+"ncat": "birdie",
+"bonus": false
+},
+{
+"h": 7,
+"par": 4,
+"si": 18,
+"gross": 5,
+"strk": 0,
+"net": 5,
+"pts": 1,
+"gd": 1,
+"nd": 1,
+"gcat": "bogey",
+"ncat": "bogey",
+"bonus": false
+},
+{
+"h": 8,
+"par": 3,
+"si": 10,
+"gross": 4,
+"strk": 1,
+"net": 3,
+"pts": 2,
+"gd": 1,
+"nd": 0,
+"gcat": "bogey",
+"ncat": "par",
+"bonus": false
+},
+{
+"h": 9,
+"par": 4,
+"si": 8,
+"gross": 4,
+"strk": 1,
+"net": 3,
+"pts": 4,
+"gd": 0,
+"nd": -1,
+"gcat": "par",
+"ncat": "birdie",
+"bonus": false
+}
+]
+},
+"6": {
+"A": [
+{
+"h": 1,
+"par": 5,
+"si": 13,
+"gross": 5,
+"strk": 0,
+"net": 5,
+"pts": 2,
+"gd": 0,
+"nd": 0,
+"gcat": "par",
+"ncat": "par",
+"bonus": false
+},
+{
+"h": 2,
+"par": 3,
+"si": 9,
+"gross": 5,
+"strk": 1,
+"net": 4,
+"pts": 1,
+"gd": 2,
+"nd": 1,
+"gcat": "double",
+"ncat": "bogey",
+"bonus": false
+},
+{
+"h": 3,
+"par": 4,
+"si": 17,
+"gross": 6,
+"strk": 0,
+"net": 6,
+"pts": 0,
+"gd": 2,
+"nd": 2,
+"gcat": "double",
+"ncat": "double",
+"bonus": false
+},
+{
+"h": 4,
+"par": 4,
+"si": 15,
+"gross": 4,
+"strk": 0,
+"net": 4,
+"pts": 2,
+"gd": 0,
+"nd": 0,
+"gcat": "par",
+"ncat": "par",
+"bonus": false
+},
+{
+"h": 5,
+"par": 4,
+"si": 5,
+"gross": 5,
+"strk": 1,
+"net": 4,
+"pts": 2,
+"gd": 1,
+"nd": 0,
+"gcat": "bogey",
+"ncat": "par",
+"bonus": false
+},
+{
+"h": 6,
+"par": 3,
+"si": 11,
+"gross": 3,
+"strk": 1,
+"net": 2,
+"pts": 4,
+"gd": 0,
+"nd": -1,
+"gcat": "par",
+"ncat": "birdie",
+"bonus": false
+},
+{
+"h": 7,
+"par": 5,
+"si": 7,
+"gross": 7,
+"strk": 1,
+"net": 6,
+"pts": 2,
+"gd": 2,
+"nd": 1,
+"gcat": "double",
+"ncat": "bogey",
+"bonus": true
+},
+{
+"h": 8,
+"par": 4,
+"si": 3,
+"gross": 7,
+"strk": 1,
+"net": 6,
+"pts": 0,
+"gd": 3,
+"nd": 2,
+"gcat": "double",
+"ncat": "double",
+"bonus": false
+},
+{
+"h": 9,
+"par": 4,
+"si": 1,
+"gross": 7,
+"strk": 1,
+"net": 6,
+"pts": 0,
+"gd": 3,
+"nd": 2,
+"gcat": "double",
+"ncat": "double",
+"bonus": false
+}
+],
+"B": [
+{
+"h": 1,
+"par": 5,
+"si": 13,
+"gross": 7,
+"strk": 1,
+"net": 6,
+"pts": 1,
+"gd": 2,
+"nd": 1,
+"gcat": "double",
+"ncat": "bogey",
+"bonus": false
+},
+{
+"h": 2,
+"par": 3,
+"si": 9,
+"gross": 5,
+"strk": 1,
+"net": 4,
+"pts": 1,
+"gd": 2,
+"nd": 1,
+"gcat": "double",
+"ncat": "bogey",
+"bonus": false
+},
+{
+"h": 3,
+"par": 4,
+"si": 17,
+"gross": 5,
+"strk": 1,
+"net": 4,
+"pts": 2,
+"gd": 1,
+"nd": 0,
+"gcat": "bogey",
+"ncat": "par",
+"bonus": false
+},
+{
+"h": 4,
+"par": 4,
+"si": 15,
+"gross": 4,
+"strk": 1,
+"net": 3,
+"pts": 4,
+"gd": 0,
+"nd": -1,
+"gcat": "par",
+"ncat": "birdie",
+"bonus": false
+},
+{
+"h": 5,
+"par": 4,
+"si": 5,
+"gross": 6,
+"strk": 1,
+"net": 5,
+"pts": 1,
+"gd": 2,
+"nd": 1,
+"gcat": "double",
+"ncat": "bogey",
+"bonus": false
+},
+{
+"h": 6,
+"par": 3,
+"si": 11,
+"gross": 5,
+"strk": 1,
+"net": 4,
+"pts": 1,
+"gd": 2,
+"nd": 1,
+"gcat": "double",
+"ncat": "bogey",
+"bonus": false
+},
+{
+"h": 7,
+"par": 5,
+"si": 7,
+"gross": 7,
+"strk": 1,
+"net": 6,
+"pts": 2,
+"gd": 2,
+"nd": 1,
+"gcat": "double",
+"ncat": "bogey",
+"bonus": true
+},
+{
+"h": 8,
+"par": 4,
+"si": 3,
+"gross": 7,
+"strk": 2,
+"net": 5,
+"pts": 1,
+"gd": 3,
+"nd": 1,
+"gcat": "double",
+"ncat": "bogey",
+"bonus": false
+},
+{
+"h": 9,
+"par": 4,
+"si": 1,
+"gross": 6,
+"strk": 2,
+"net": 4,
+"pts": 2,
+"gd": 2,
+"nd": 0,
+"gcat": "double",
+"ncat": "par",
+"bonus": false
+}
+],
+"C": [
+{
+"h": 1,
+"par": 5,
+"si": 13,
+"gross": 5,
+"strk": 1,
+"net": 4,
+"pts": 4,
+"gd": 0,
+"nd": -1,
+"gcat": "par",
+"ncat": "birdie",
+"bonus": false
+},
+{
+"h": 2,
+"par": 3,
+"si": 9,
+"gross": 6,
+"strk": 1,
+"net": 5,
+"pts": 0,
+"gd": 3,
+"nd": 2,
+"gcat": "double",
+"ncat": "double",
+"bonus": false
+},
+{
+"h": 3,
+"par": 4,
+"si": 17,
+"gross": 5,
+"strk": 1,
+"net": 4,
+"pts": 2,
+"gd": 1,
+"nd": 0,
+"gcat": "bogey",
+"ncat": "par",
+"bonus": false
+},
+{
+"h": 4,
+"par": 4,
+"si": 15,
+"gross": 4,
+"strk": 1,
+"net": 3,
+"pts": 4,
+"gd": 0,
+"nd": -1,
+"gcat": "par",
+"ncat": "birdie",
+"bonus": false
+},
+{
+"h": 5,
+"par": 4,
+"si": 5,
+"gross": 4,
+"strk": 1,
+"net": 3,
+"pts": 4,
+"gd": 0,
+"nd": -1,
+"gcat": "par",
+"ncat": "birdie",
+"bonus": false
+},
+{
+"h": 6,
+"par": 3,
+"si": 11,
+"gross": 6,
+"strk": 1,
+"net": 5,
+"pts": 0,
+"gd": 3,
+"nd": 2,
+"gcat": "double",
+"ncat": "double",
+"bonus": false
+},
+{
+"h": 7,
+"par": 5,
+"si": 7,
+"gross": 8,
+"strk": 1,
+"net": 7,
+"pts": 0,
+"gd": 3,
+"nd": 2,
+"gcat": "double",
+"ncat": "double",
+"bonus": true
+},
+{
+"h": 8,
+"par": 4,
+"si": 3,
+"gross": 5,
+"strk": 1,
+"net": 4,
+"pts": 2,
+"gd": 1,
+"nd": 0,
+"gcat": "bogey",
+"ncat": "par",
+"bonus": false
+},
+{
+"h": 9,
+"par": 4,
+"si": 1,
+"gross": 7,
+"strk": 2,
+"net": 5,
+"pts": 1,
+"gd": 3,
+"nd": 1,
+"gcat": "double",
+"ncat": "bogey",
+"bonus": false
+}
+],
+"D": [
+{
+"h": 1,
+"par": 5,
+"si": 13,
+"gross": 4,
+"strk": 0,
+"net": 4,
+"pts": 4,
+"gd": -1,
+"nd": -1,
+"gcat": "birdie",
+"ncat": "birdie",
+"bonus": false
+},
+{
+"h": 2,
+"par": 3,
+"si": 9,
+"gross": 5,
+"strk": 1,
+"net": 4,
+"pts": 1,
+"gd": 2,
+"nd": 1,
+"gcat": "double",
+"ncat": "bogey",
+"bonus": false
+},
+{
+"h": 3,
+"par": 4,
+"si": 17,
+"gross": 5,
+"strk": 0,
+"net": 5,
+"pts": 1,
+"gd": 1,
+"nd": 1,
+"gcat": "bogey",
+"ncat": "bogey",
+"bonus": false
+},
+{
+"h": 4,
+"par": 4,
+"si": 15,
+"gross": 4,
+"strk": 0,
+"net": 4,
+"pts": 2,
+"gd": 0,
+"nd": 0,
+"gcat": "par",
+"ncat": "par",
+"bonus": false
+},
+{
+"h": 5,
+"par": 4,
+"si": 5,
+"gross": 5,
+"strk": 1,
+"net": 4,
+"pts": 2,
+"gd": 1,
+"nd": 0,
+"gcat": "bogey",
+"ncat": "par",
+"bonus": false
+},
+{
+"h": 6,
+"par": 3,
+"si": 11,
+"gross": 5,
+"strk": 0,
+"net": 5,
+"pts": 0,
+"gd": 2,
+"nd": 2,
+"gcat": "double",
+"ncat": "double",
+"bonus": false
+},
+{
+"h": 7,
+"par": 5,
+"si": 7,
+"gross": 6,
+"strk": 1,
+"net": 5,
+"pts": 4,
+"gd": 1,
+"nd": 0,
+"gcat": "bogey",
+"ncat": "par",
+"bonus": true
+},
+{
+"h": 8,
+"par": 4,
+"si": 3,
+"gross": 5,
+"strk": 1,
+"net": 4,
+"pts": 2,
+"gd": 1,
+"nd": 0,
+"gcat": "bogey",
+"ncat": "par",
+"bonus": false
+},
+{
+"h": 9,
+"par": 4,
+"si": 1,
+"gross": 6,
+"strk": 1,
+"net": 5,
+"pts": 1,
+"gd": 2,
+"nd": 1,
+"gcat": "double",
+"ncat": "bogey",
+"bonus": false
+}
+],
+"E": [
+{
+"h": 1,
+"par": 5,
+"si": 13,
+"gross": 5,
+"strk": 1,
+"net": 4,
+"pts": 4,
+"gd": 0,
+"nd": -1,
+"gcat": "par",
+"ncat": "birdie",
+"bonus": false
+},
+{
+"h": 2,
+"par": 3,
+"si": 9,
+"gross": 3,
+"strk": 1,
+"net": 2,
+"pts": 4,
+"gd": 0,
+"nd": -1,
+"gcat": "par",
+"ncat": "birdie",
+"bonus": false
+},
+{
+"h": 3,
+"par": 4,
+"si": 17,
+"gross": 5,
+"strk": 0,
+"net": 5,
+"pts": 1,
+"gd": 1,
+"nd": 1,
+"gcat": "bogey",
+"ncat": "bogey",
+"bonus": false
+},
+{
+"h": 4,
+"par": 4,
+"si": 15,
+"gross": 4,
+"strk": 0,
+"net": 4,
+"pts": 2,
+"gd": 0,
+"nd": 0,
+"gcat": "par",
+"ncat": "par",
+"bonus": false
+},
+{
+"h": 5,
+"par": 4,
+"si": 5,
+"gross": 6,
+"strk": 1,
+"net": 5,
+"pts": 1,
+"gd": 2,
+"nd": 1,
+"gcat": "double",
+"ncat": "bogey",
+"bonus": false
+},
+{
+"h": 6,
+"par": 3,
+"si": 11,
+"gross": 4,
+"strk": 1,
+"net": 3,
+"pts": 2,
+"gd": 1,
+"nd": 0,
+"gcat": "bogey",
+"ncat": "par",
+"bonus": false
+},
+{
+"h": 7,
+"par": 5,
+"si": 7,
+"gross": 5,
+"strk": 1,
+"net": 4,
+"pts": 8,
+"gd": 0,
+"nd": -1,
+"gcat": "par",
+"ncat": "birdie",
+"bonus": true
+},
+{
+"h": 8,
+"par": 4,
+"si": 3,
+"gross": 6,
+"strk": 1,
+"net": 5,
+"pts": 1,
+"gd": 2,
+"nd": 1,
+"gcat": "double",
+"ncat": "bogey",
+"bonus": false
+},
+{
+"h": 9,
+"par": 4,
+"si": 1,
+"gross": 6,
+"strk": 1,
+"net": 5,
+"pts": 1,
+"gd": 2,
+"nd": 1,
+"gcat": "double",
+"ncat": "bogey",
+"bonus": false
+}
+]
+},
+"7": {
+"A": [
+{
+"h": 1,
+"par": 4,
+"si": 2,
+"gross": 5,
+"strk": 1,
+"net": 4,
+"pts": 4,
+"gd": 1,
+"nd": 0,
+"gcat": "bogey",
+"ncat": "par",
+"bonus": true
+},
+{
+"h": 2,
+"par": 4,
+"si": 4,
+"gross": 4,
+"strk": 1,
+"net": 3,
+"pts": 4,
+"gd": 0,
+"nd": -1,
+"gcat": "par",
+"ncat": "birdie",
+"bonus": false
+},
+{
+"h": 3,
+"par": 5,
+"si": 6,
+"gross": 9,
+"strk": 1,
+"net": 8,
+"pts": 0,
+"gd": 4,
+"nd": 3,
+"gcat": "double",
+"ncat": "double",
+"bonus": false
+},
+{
+"h": 4,
+"par": 4,
+"si": 16,
+"gross": 5,
+"strk": 0,
+"net": 5,
+"pts": 1,
+"gd": 1,
+"nd": 1,
+"gcat": "bogey",
+"ncat": "bogey",
+"bonus": false
+},
+{
+"h": 5,
+"par": 3,
+"si": 14,
+"gross": 4,
+"strk": 0,
+"net": 4,
+"pts": 1,
+"gd": 1,
+"nd": 1,
+"gcat": "bogey",
+"ncat": "bogey",
+"bonus": false
+},
+{
+"h": 6,
+"par": 5,
+"si": 12,
+"gross": 5,
+"strk": 0,
+"net": 5,
+"pts": 2,
+"gd": 0,
+"nd": 0,
+"gcat": "par",
+"ncat": "par",
+"bonus": false
+},
+{
+"h": 7,
+"par": 4,
+"si": 18,
+"gross": 4,
+"strk": 0,
+"net": 4,
+"pts": 2,
+"gd": 0,
+"nd": 0,
+"gcat": "par",
+"ncat": "par",
+"bonus": false
+},
+{
+"h": 8,
+"par": 3,
+"si": 10,
+"gross": 5,
+"strk": 1,
+"net": 4,
+"pts": 1,
+"gd": 2,
+"nd": 1,
+"gcat": "double",
+"ncat": "bogey",
+"bonus": false
+},
+{
+"h": 9,
+"par": 4,
+"si": 8,
+"gross": 6,
+"strk": 1,
+"net": 5,
+"pts": 1,
+"gd": 2,
+"nd": 1,
+"gcat": "double",
+"ncat": "bogey",
+"bonus": false
+}
+],
+"B": [
+{
+"h": 1,
+"par": 4,
+"si": 2,
+"gross": 8,
+"strk": 2,
+"net": 6,
+"pts": 0,
+"gd": 4,
+"nd": 2,
+"gcat": "double",
+"ncat": "double",
+"bonus": true
+},
+{
+"h": 2,
+"par": 4,
+"si": 4,
+"gross": 4,
+"strk": 1,
+"net": 3,
+"pts": 4,
+"gd": 0,
+"nd": -1,
+"gcat": "par",
+"ncat": "birdie",
+"bonus": false
+},
+{
+"h": 3,
+"par": 5,
+"si": 6,
+"gross": 9,
+"strk": 1,
+"net": 8,
+"pts": 0,
+"gd": 4,
+"nd": 3,
+"gcat": "double",
+"ncat": "double",
+"bonus": false
+},
+{
+"h": 4,
+"par": 4,
+"si": 16,
+"gross": 5,
+"strk": 1,
+"net": 4,
+"pts": 2,
+"gd": 1,
+"nd": 0,
+"gcat": "bogey",
+"ncat": "par",
+"bonus": false
+},
+{
+"h": 5,
+"par": 3,
+"si": 14,
+"gross": 4,
+"strk": 1,
+"net": 3,
+"pts": 2,
+"gd": 1,
+"nd": 0,
+"gcat": "bogey",
+"ncat": "par",
+"bonus": false
+},
+{
+"h": 6,
+"par": 5,
+"si": 12,
+"gross": 5,
+"strk": 1,
+"net": 4,
+"pts": 4,
+"gd": 0,
+"nd": -1,
+"gcat": "par",
+"ncat": "birdie",
+"bonus": false
+},
+{
+"h": 7,
+"par": 4,
+"si": 18,
+"gross": 4,
+"strk": 1,
+"net": 3,
+"pts": 4,
+"gd": 0,
+"nd": -1,
+"gcat": "par",
+"ncat": "birdie",
+"bonus": false
+},
+{
+"h": 8,
+"par": 3,
+"si": 10,
+"gross": 5,
+"strk": 1,
+"net": 4,
+"pts": 1,
+"gd": 2,
+"nd": 1,
+"gcat": "double",
+"ncat": "bogey",
+"bonus": false
+},
+{
+"h": 9,
+"par": 4,
+"si": 8,
+"gross": 6,
+"strk": 1,
+"net": 5,
+"pts": 1,
+"gd": 2,
+"nd": 1,
+"gcat": "double",
+"ncat": "bogey",
+"bonus": false
+}
+],
+"C": [
+{
+"h": 1,
+"par": 4,
+"si": 2,
+"gross": 4,
+"strk": 1,
+"net": 3,
+"pts": 8,
+"gd": 0,
+"nd": -1,
+"gcat": "par",
+"ncat": "birdie",
+"bonus": true
+},
+{
+"h": 2,
+"par": 4,
+"si": 4,
+"gross": 7,
+"strk": 1,
+"net": 6,
+"pts": 0,
+"gd": 3,
+"nd": 2,
+"gcat": "double",
+"ncat": "double",
+"bonus": false
+},
+{
+"h": 3,
+"par": 5,
+"si": 6,
+"gross": 7,
+"strk": 1,
+"net": 6,
+"pts": 1,
+"gd": 2,
+"nd": 1,
+"gcat": "double",
+"ncat": "bogey",
+"bonus": false
+},
+{
+"h": 4,
+"par": 4,
+"si": 16,
+"gross": 4,
+"strk": 1,
+"net": 3,
+"pts": 4,
+"gd": 0,
+"nd": -1,
+"gcat": "par",
+"ncat": "birdie",
+"bonus": false
+},
+{
+"h": 5,
+"par": 3,
+"si": 14,
+"gross": 6,
+"strk": 1,
+"net": 5,
+"pts": 0,
+"gd": 3,
+"nd": 2,
+"gcat": "double",
+"ncat": "double",
+"bonus": false
+},
+{
+"h": 6,
+"par": 5,
+"si": 12,
+"gross": 5,
+"strk": 1,
+"net": 4,
+"pts": 4,
+"gd": 0,
+"nd": -1,
+"gcat": "par",
+"ncat": "birdie",
+"bonus": false
+},
+{
+"h": 7,
+"par": 4,
+"si": 18,
+"gross": 4,
+"strk": 1,
+"net": 3,
+"pts": 4,
+"gd": 0,
+"nd": -1,
+"gcat": "par",
+"ncat": "birdie",
+"bonus": false
+},
+{
+"h": 8,
+"par": 3,
+"si": 10,
+"gross": 4,
+"strk": 1,
+"net": 3,
+"pts": 2,
+"gd": 1,
+"nd": 0,
+"gcat": "bogey",
+"ncat": "par",
+"bonus": false
+},
+{
+"h": 9,
+"par": 4,
+"si": 8,
+"gross": 8,
+"strk": 1,
+"net": 7,
+"pts": 0,
+"gd": 4,
+"nd": 3,
+"gcat": "double",
+"ncat": "double",
+"bonus": false
+}
+],
+"D": [
+{
+"h": 1,
+"par": 4,
+"si": 2,
+"gross": 5,
+"strk": 1,
+"net": 4,
+"pts": 4,
+"gd": 1,
+"nd": 0,
+"gcat": "bogey",
+"ncat": "par",
+"bonus": true
+},
+{
+"h": 2,
+"par": 4,
+"si": 4,
+"gross": 7,
+"strk": 1,
+"net": 6,
+"pts": 0,
+"gd": 3,
+"nd": 2,
+"gcat": "double",
+"ncat": "double",
+"bonus": false
+},
+{
+"h": 3,
+"par": 5,
+"si": 6,
+"gross": 5,
+"strk": 1,
+"net": 4,
+"pts": 4,
+"gd": 0,
+"nd": -1,
+"gcat": "par",
+"ncat": "birdie",
+"bonus": false
+},
+{
+"h": 4,
+"par": 4,
+"si": 16,
+"gross": 4,
+"strk": 0,
+"net": 4,
+"pts": 2,
+"gd": 0,
+"nd": 0,
+"gcat": "par",
+"ncat": "par",
+"bonus": false
+},
+{
+"h": 5,
+"par": 3,
+"si": 14,
+"gross": 5,
+"strk": 0,
+"net": 5,
+"pts": 0,
+"gd": 2,
+"nd": 2,
+"gcat": "double",
+"ncat": "double",
+"bonus": false
+},
+{
+"h": 6,
+"par": 5,
+"si": 12,
+"gross": 5,
+"strk": 0,
+"net": 5,
+"pts": 2,
+"gd": 0,
+"nd": 0,
+"gcat": "par",
+"ncat": "par",
+"bonus": false
+},
+{
+"h": 7,
+"par": 4,
+"si": 18,
+"gross": 5,
+"strk": 0,
+"net": 5,
+"pts": 1,
+"gd": 1,
+"nd": 1,
+"gcat": "bogey",
+"ncat": "bogey",
+"bonus": false
+},
+{
+"h": 8,
+"par": 3,
+"si": 10,
+"gross": 3,
+"strk": 0,
+"net": 3,
+"pts": 2,
+"gd": 0,
+"nd": 0,
+"gcat": "par",
+"ncat": "par",
+"bonus": false
+},
+{
+"h": 9,
+"par": 4,
+"si": 8,
+"gross": 5,
+"strk": 1,
+"net": 4,
+"pts": 2,
+"gd": 1,
+"nd": 0,
+"gcat": "bogey",
+"ncat": "par",
+"bonus": false
+}
+],
+"E": [
+{
+"h": 1,
+"par": 4,
+"si": 2,
+"gross": 6,
+"strk": 1,
+"net": 5,
+"pts": 2,
+"gd": 2,
+"nd": 1,
+"gcat": "double",
+"ncat": "bogey",
+"bonus": true
+},
+{
+"h": 2,
+"par": 4,
+"si": 4,
+"gross": 5,
+"strk": 1,
+"net": 4,
+"pts": 2,
+"gd": 1,
+"nd": 0,
+"gcat": "bogey",
+"ncat": "par",
+"bonus": false
+},
+{
+"h": 3,
+"par": 5,
+"si": 6,
+"gross": 6,
+"strk": 1,
+"net": 5,
+"pts": 2,
+"gd": 1,
+"nd": 0,
+"gcat": "bogey",
+"ncat": "par",
+"bonus": false
+},
+{
+"h": 4,
+"par": 4,
+"si": 16,
+"gross": 5,
+"strk": 0,
+"net": 5,
+"pts": 1,
+"gd": 1,
+"nd": 1,
+"gcat": "bogey",
+"ncat": "bogey",
+"bonus": false
+},
+{
+"h": 5,
+"par": 3,
+"si": 14,
+"gross": 4,
+"strk": 0,
+"net": 4,
+"pts": 1,
+"gd": 1,
+"nd": 1,
+"gcat": "bogey",
+"ncat": "bogey",
+"bonus": false
+},
+{
+"h": 6,
+"par": 5,
+"si": 12,
+"gross": 6,
+"strk": 1,
+"net": 5,
+"pts": 2,
+"gd": 1,
+"nd": 0,
+"gcat": "bogey",
+"ncat": "par",
+"bonus": false
+},
+{
+"h": 7,
+"par": 4,
+"si": 18,
+"gross": 5,
+"strk": 0,
+"net": 5,
+"pts": 1,
+"gd": 1,
+"nd": 1,
+"gcat": "bogey",
+"ncat": "bogey",
+"bonus": false
+},
+{
+"h": 8,
+"par": 3,
+"si": 10,
+"gross": 3,
+"strk": 1,
+"net": 2,
+"pts": 4,
+"gd": 0,
+"nd": -1,
+"gcat": "par",
+"ncat": "birdie",
+"bonus": false
+},
+{
+"h": 9,
+"par": 4,
+"si": 8,
+"gross": 5,
+"strk": 1,
+"net": 4,
+"pts": 2,
+"gd": 1,
+"nd": 0,
+"gcat": "bogey",
+"ncat": "par",
+"bonus": false
+}
+]
+}
+},
+"stbl_match": {
+"1": {
+"A": 17,
+"B": 17,
+"C": 22,
+"D": 15,
+"E": 15
+},
+"2": {
+"A": 23,
+"B": 14,
+"C": 28,
+"D": 21,
+"E": 29
+},
+"3": {
+"A": 16,
+"B": 28,
+"C": 28,
+"D": 17,
+"E": 17
+},
+"4": {
+"A": 24,
+"B": 13,
+"C": 27,
+"D": 10,
+"E": 16
+},
+"5": {
+"A": 10,
+"B": 16,
+"C": 22,
+"D": 16,
+"E": 18
+},
+"6": {
+"A": 13,
+"B": 15,
+"C": 17,
+"D": 17,
+"E": 24
+},
+"7": {
+"A": 16,
+"B": 18,
+"C": 23,
+"D": 17,
+"E": 17
+}
+},
+"overall": {
+"A": 119,
+"B": 121,
+"C": 167,
+"D": 113,
+"E": 136
+},
+"fri": {
+"A": 56,
+"B": 59,
+"C": 78,
+"D": 53,
+"E": 61
+},
+"sat": {
+"A": 63,
+"B": 62,
+"C": 89,
+"D": 60,
+"E": 75
+},
+"team_results": [
+{
+"m": 1,
+"label": "Fri Front 9",
+"day": "Friday",
+"two": [
+"A",
+"B"
+],
+"twoNames": [
+"keith",
+"Hicks"
+],
+"three": [
+"C",
+"D",
+"E"
+],
+"threeNames": [
+"Joe",
+"Tusc",
+"Weeks"
+],
+"s2": 79,
+"s3": 81,
+"winner": "two",
+"margin": 2,
+"bonus": {
+"dbl": 6,
+"best": 2,
+"worst": 5
+},
+"holeTot": [
+[
+10,
+9
+],
+[
+6,
+4
+],
+[
+9,
+8
+],
+[
+9,
+9
+],
+[
+12,
+12
+],
+[
+7,
+6
+],
+[
+10,
+12
+],
+[
+8,
+10
+],
+[
+8,
+11
+]
+],
+"drops": {
+"147": "E",
+"258": "D",
+"369": "C"
+}
+},
+{
+"m": 2,
+"label": "Fri Back 9",
+"day": "Friday",
+"two": [
+"A",
+"C"
+],
+"twoNames": [
+"keith",
+"Joe"
+],
+"three": [
+"B",
+"D",
+"E"
+],
+"threeNames": [
+"Hicks",
+"Tusc",
+"Weeks"
+],
+"s2": 71,
+"s3": 77,
+"winner": "two",
+"margin": 6,
+"bonus": {
+"dbl": 3,
+"best": 9,
+"worst": 8
+},
+"holeTot": [
+[
+9,
+9
+],
+[
+10,
+11
+],
+[
+9,
+8
+],
+[
+7,
+8
+],
+[
+7,
+8
+],
+[
+11,
+10
+],
+[
+8,
+9
+],
+[
+6,
+10
+],
+[
+4,
+4
+]
+],
+"drops": {
+"147": "E",
+"258": "D",
+"369": "B"
+}
+},
+{
+"m": 3,
+"label": "Fri Third 9",
+"day": "Friday",
+"two": [
+"A",
+"D"
+],
+"twoNames": [
+"keith",
+"Tusc"
+],
+"three": [
+"B",
+"C",
+"E"
+],
+"threeNames": [
+"Hicks",
+"Joe",
+"Weeks"
+],
+"s2": 79,
+"s3": 80,
+"winner": "two",
+"margin": 1,
+"bonus": {
+"dbl": 3,
+"best": 2,
+"worst": 1
+},
+"holeTot": [
+[
+10,
+12
+],
+[
+4,
+6
+],
+[
+10,
+8
+],
+[
+11,
+10
+],
+[
+10,
+9
+],
+[
+6,
+6
+],
+[
+12,
+11
+],
+[
+10,
+7
+],
+[
+6,
+11
+]
+],
+"drops": {
+"147": "E",
+"258": "C",
+"369": "B"
+}
+},
+{
+"m": 4,
+"label": "Sat AM Front 9",
+"day": "Saturday",
+"two": [
+"A",
+"E"
+],
+"twoNames": [
+"keith",
+"Weeks"
+],
+"three": [
+"B",
+"C",
+"D"
+],
+"threeNames": [
+"Hicks",
+"Joe",
+"Tusc"
+],
+"s2": 78,
+"s3": 82,
+"winner": "two",
+"margin": 4,
+"bonus": {
+"dbl": 3,
+"best": 6,
+"worst": 9
+},
+"holeTot": [
+[
+13,
+10
+],
+[
+7,
+6
+],
+[
+10,
+8
+],
+[
+9,
+8
+],
+[
+11,
+12
+],
+[
+4,
+4
+],
+[
+9,
+11
+],
+[
+7,
+11
+],
+[
+8,
+12
+]
+],
+"drops": {
+"147": "D",
+"258": "C",
+"369": "B"
+}
+},
+{
+"m": 5,
+"label": "Sat AM Back 9",
+"day": "Saturday",
+"two": [
+"B",
+"E"
+],
+"twoNames": [
+"Hicks",
+"Weeks"
+],
+"three": [
+"A",
+"C",
+"D"
+],
+"threeNames": [
+"keith",
+"Joe",
+"Tusc"
+],
+"s2": 83,
+"s3": 88,
+"winner": "two",
+"margin": 5,
+"bonus": {
+"dbl": 3,
+"best": 6,
+"worst": 7
+},
+"holeTot": [
+[
+6,
+10
+],
+[
+12,
+8
+],
+[
+11,
+9
+],
+[
+9,
+11
+],
+[
+10,
+14
+],
+[
+8,
+10
+],
+[
+12,
+10
+],
+[
+5,
+7
+],
+[
+10,
+9
+]
+],
+"drops": {
+"147": "D",
+"258": "C",
+"369": "A"
+}
+},
+{
+"m": 6,
+"label": "Sat PM Front 9",
+"day": "Saturday",
+"two": [
+"B",
+"D"
+],
+"twoNames": [
+"Hicks",
+"Tusc"
+],
+"three": [
+"A",
+"C",
+"E"
+],
+"threeNames": [
+"keith",
+"Joe",
+"Weeks"
+],
+"s2": 81,
+"s3": 81,
+"winner": "tie",
+"margin": 0,
+"bonus": {
+"dbl": 7,
+"best": 4,
+"worst": 9
+},
+"holeTot": [
+[
+10,
+9
+],
+[
+8,
+6
+],
+[
+9,
+9
+],
+[
+6,
+6
+],
+[
+9,
+9
+],
+[
+9,
+8
+],
+[
+11,
+13
+],
+[
+9,
+11
+],
+[
+10,
+10
+]
+],
+"drops": {
+"147": "E",
+"258": "C",
+"369": "A"
+}
+},
+{
+"m": 7,
+"label": "Sat PM Back 9",
+"day": "Saturday",
+"two": [
+"D",
+"E"
+],
+"twoNames": [
+"Tusc",
+"Weeks"
+],
+"three": [
+"A",
+"B",
+"C"
+],
+"threeNames": [
+"keith",
+"Hicks",
+"Joe"
+],
+"s2": 80,
+"s3": 85,
+"winner": "two",
+"margin": 5,
+"bonus": {
+"dbl": 1,
+"best": 9,
+"worst": 3
+},
+"holeTot": [
+[
+9,
+10
+],
+[
+10,
+9
+],
+[
+10,
+16
+],
+[
+9,
+9
+],
+[
+9,
+9
+],
+[
+10,
+8
+],
+[
+10,
+7
+],
+[
+5,
+7
+],
+[
+8,
+10
+]
+],
+"drops": {
+"147": "C",
+"258": "B",
+"369": "A"
+}
+}
+],
+"team_wins": {
+"A": 4,
+"B": 2,
+"C": 1,
+"D": 2,
+"E": 3
+},
+"best_hole": {
+"A": {
+"m": 2,
+"label": "Fri Back 9",
+"p": "A",
+"name": "keith",
+"h": 9,
+"par": 4,
+"gross": 3,
+"net": 2,
+"gd": -1,
+"nd": -2,
+"pts": 8
+},
+"B": {
+"m": 3,
+"label": "Fri Third 9",
+"p": "B",
+"name": "Hicks",
+"h": 3,
+"par": 4,
+"gross": 3,
+"net": 2,
+"gd": -1,
+"nd": -2,
+"pts": 16
+},
+"C": {
+"m": 1,
+"label": "Fri Front 9",
+"p": "C",
+"name": "Joe",
+"h": 1,
+"par": 5,
+"gross": 4,
+"net": 3,
+"gd": -1,
+"nd": -2,
+"pts": 8
+},
+"D": {
+"m": 6,
+"label": "Sat PM Front 9",
+"p": "D",
+"name": "Tusc",
+"h": 1,
+"par": 5,
+"gross": 4,
+"net": 4,
+"gd": -1,
+"nd": -1,
+"pts": 4
+},
+"E": {
+"m": 2,
+"label": "Fri Back 9",
+"p": "E",
+"name": "Weeks",
+"h": 9,
+"par": 4,
+"gross": 3,
+"net": 2,
+"gd": -1,
+"nd": -2,
+"pts": 8
+}
+},
+"worst_hole": {
+"A": {
+"m": 5,
+"label": "Sat AM Back 9",
+"p": "A",
+"name": "keith",
+"h": 5,
+"par": 3,
+"gross": 7,
+"net": 7,
+"gd": 4,
+"nd": 4,
+"pts": 0
+},
+"B": {
+"m": 5,
+"label": "Sat AM Back 9",
+"p": "B",
+"name": "Hicks",
+"h": 6,
+"par": 5,
+"gross": 9,
+"net": 8,
+"gd": 4,
+"nd": 3,
+"pts": 0
+},
+"C": {
+"m": 5,
+"label": "Sat AM Back 9",
+"p": "C",
+"name": "Joe",
+"h": 2,
+"par": 4,
+"gross": 8,
+"net": 7,
+"gd": 4,
+"nd": 3,
+"pts": 0
+},
+"D": {
+"m": 5,
+"label": "Sat AM Back 9",
+"p": "D",
+"name": "Tusc",
+"h": 5,
+"par": 3,
+"gross": 7,
+"net": 7,
+"gd": 4,
+"nd": 4,
+"pts": 0
+},
+"E": {
+"m": 4,
+"label": "Sat AM Front 9",
+"p": "E",
+"name": "Weeks",
+"h": 5,
+"par": 4,
+"gross": 8,
+"net": 7,
+"gd": 4,
+"nd": 3,
+"pts": 0
+}
+},
+"catcount": {
+"A": {
+"gross": {
+"eagle": 0,
+"birdie": 1,
+"par": 19,
+"bogey": 21,
+"double": 22
+},
+"net": {
+"eagle": 1,
+"birdie": 10,
+"par": 23,
+"bogey": 15,
+"double": 14
+}
+},
+"B": {
+"gross": {
+"eagle": 0,
+"birdie": 1,
+"par": 9,
+"bogey": 13,
+"double": 40
+},
+"net": {
+"eagle": 2,
+"birdie": 9,
+"par": 15,
+"bogey": 22,
+"double": 15
+}
+},
+"C": {
+"gross": {
+"eagle": 0,
+"birdie": 3,
+"par": 19,
+"bogey": 19,
+"double": 22
+},
+"net": {
+"eagle": 3,
+"birdie": 20,
+"par": 18,
+"bogey": 10,
+"double": 12
+}
+},
+"D": {
+"gross": {
+"eagle": 0,
+"birdie": 1,
+"par": 18,
+"bogey": 24,
+"double": 20
+},
+"net": {
+"eagle": 0,
+"birdie": 6,
+"par": 26,
+"bogey": 20,
+"double": 11
+}
+},
+"E": {
+"gross": {
+"eagle": 0,
+"birdie": 1,
+"par": 17,
+"bogey": 27,
+"double": 18
+},
+"net": {
+"eagle": 1,
+"birdie": 13,
+"par": 20,
+"bogey": 21,
+"double": 8
+}
+}
+},
+"records": {
+"gross_eagles": [
+[],
+0
+],
+"gross_birdies": [
+[
+"Joe"
+],
+3
+],
+"gross_pars": [
+[
+"keith",
+"Joe"
+],
+19
+],
+"net_eagles": [
+[
+"Joe"
+],
+3
+],
+"net_birdies": [
+[
+"Joe"
+],
+20
+],
+"net_pars": [
+[
+"Tusc"
+],
+26
+]
+},
+"gross_total": {
+"A": 328,
+"B": 368,
+"C": 329,
+"D": 324,
+"E": 322
+},
+"net_total": {
+"A": 289,
+"B": 294,
+"C": 262,
+"D": 292,
+"E": 276
+},
+"low_gross_nine": {
+"m": 2,
+"label": "Fri Back 9",
+"name": "Joe",
+"val": 41
+},
+"best_stbl_nine": {
+"m": 2,
+"label": "Fri Back 9",
+"name": "Weeks",
+"val": 29
+},
+"nm": {
+"A": "keith",
+"B": "Hicks",
+"C": "Joe",
+"D": "Tusc",
+"E": "Weeks"
+}
+};
+const PC = {A:'#2563eb',B:'#d97706',C:'#0e9f6e',D:'#db2777',E:'#7c3aed'}; // player colors
+const CODES = DATA.players.map(p=>p.code);
+const NAME = {}; DATA.players.forEach(p=>NAME[p.code]=p.name);
+const HC = {}; DATA.players.forEach(p=>HC[p.code]=p.hc);
+const $ = (s,el=document)=>el.querySelector(s);
+const el=(t,c,html)=>{const e=document.createElement(t);if(c)e.className=c;if(html!=null)e.innerHTML=html;return e;};
+
+// ---------- TABS ----------
+document.querySelectorAll('#tabs button').forEach(b=>b.onclick=()=>{
+  document.querySelectorAll('#tabs button').forEach(x=>x.classList.remove('active'));
+  b.classList.add('active');
+  ['standings','teams','matches','players','records'].forEach(id=>$('#'+id).classList.add('hide'));
+  $('#'+b.dataset.tab).classList.remove('hide');
+  window.scrollTo({top:0,behavior:'smooth'});
+});
+
+// ---------- STANDINGS ----------
+function renderStandings(){
+  const s=$('#standings'); s.innerHTML='';
+  const order=[...CODES].sort((a,b)=>DATA.overall[b]-DATA.overall[a]);
+  const champ=order[0], mx=DATA.overall[champ];
+  s.appendChild(el('div','champ',
+    `<div class="medal">🏆</div><div><div class="sub">Weekend Stableford Champion</div>
+     <div class="who" style="color:${PC[champ]}">${NAME[champ]}</div>
+     <div class="sub">${mx} points · won by ${mx-DATA.overall[order[1]]} over ${NAME[order[1]]}</div></div>`));
+  const p=el('div','panel');
+  p.appendChild(el('h2','sec','Individual Stableford — full weekend'));
+  let rows=order.map((c,i)=>{
+    const w=Math.round(DATA.overall[c]/mx*100);
+    return `<tr>
+      <td><span class="rank ${i==0?'r1':''}">${i+1}</span></td>
+      <td><span class="pname"><span class="dot" style="background:${PC[c]}"></span>${NAME[c]}</span></td>
+      <td class="num">${HC[c]}</td>
+      <td class="num">${DATA.fri[c]}</td>
+      <td class="num">${DATA.sat[c]}</td>
+      <td class="num"><b>${DATA.overall[c]}</b></td>
+      <td style="width:34%"><div class="bar" style="width:${w}%;background:${PC[c]}"></div></td>
+    </tr>`;}).join('');
+  p.appendChild(el('table','lb',
+    `<thead><tr><th></th><th>Player</th><th class="num">HC</th><th class="num">Fri</th>
+     <th class="num">Sat</th><th class="num">Total</th><th></th></tr></thead><tbody>${rows}</tbody>`));
+  s.appendChild(p);
+}
+
+// ---------- TEAM MATCHES ----------
+function renderTeams(){
+  const s=$('#teams'); s.innerHTML='';
+  // wins tally
+  const tw=el('div','panel'); tw.appendChild(el('h2','sec','Team match wins by player'));
+  const order=[...CODES].sort((a,b)=>DATA.team_wins[b]-DATA.team_wins[a]);
+  const g=el('div','selrow');
+  order.forEach(c=>{const b=el('button');b.style.cursor='default';
+    b.innerHTML=`<span class="dot" style="background:${PC[c]};display:inline-block;margin-right:6px"></span>${NAME[c]} — <b>${DATA.team_wins[c]}</b>`;g.appendChild(b);});
+  tw.appendChild(g);
+  tw.appendChild(el('div','note','A player is credited a win for every 9-hole match their team won. Match 6 was a tie (no winner).'));
+  s.appendChild(tw);
+  // match cards
+  const p=el('div','panel'); p.appendChild(el('h2','sec','The 7 matches'));
+  DATA.team_results.forEach(t=>{
+    const c=el('div','mcard');
+    const w2=t.winner==='two', w3=t.winner==='three';
+    c.innerHTML=`<div class="lab">Match ${t.m} · ${t.label} · ${t.day}</div>
+      <div class="teamrow ${w2?'win':''}"><span class="nm">${t.twoNames.join(' & ')} <small style="color:var(--muted)">(2-man)</small></span><span class="sc">${t.s2}</span></div>
+      <div class="teamrow ${w3?'win':''}"><span class="nm">${t.threeNames.join(' / ')} <small style="color:var(--muted)">(3-man)</small></span><span class="sc">${t.s3}</span></div>
+      ${t.winner==='tie'?'<span class="badge tie">Tied — '+t.s2+' apiece</span>'
+        :'<span class="badge">'+ (w2?t.twoNames.join(' & '):t.threeNames.join(' / ')) +' win by '+t.margin+'</span>'}`;
+    p.appendChild(c);
+  });
+  s.appendChild(p);
+}
+
+// ---------- SCORECARDS (by match) ----------
+let scMode='net';
+function renderMatches(){
+  const s=$('#matches'); s.innerHTML='';
+  const p=el('div','panel');
+  p.appendChild(el('h2','sec','Scorecard explorer — pick a match'));
+  const sel=el('div','selrow');
+  DATA.matches.forEach(m=>{const b=el('button',m.m===curMatch?'active':'');b.textContent='M'+m.m;
+    b.onclick=()=>{curMatch=m.m;renderMatches();};sel.appendChild(b);});
+  p.appendChild(sel);
+  // toggle
+  const tg=el('div','toggle');
+  [['net','Net'],['gross','Gross'],['pts','Stableford']].forEach(([k,lab])=>{
+    const b=el('button',scMode===k?'active':'');b.textContent=lab;b.onclick=()=>{scMode=k;renderMatches();};tg.appendChild(b);});
+  p.appendChild(tg);
+  p.appendChild(buildScorecard(curMatch));
+  // legend
+  if(scMode!=='pts'){
+    p.appendChild(el('div','legend',
+      `<span><i style="background:var(--eagle)"></i>eagle+</span><span><i style="background:var(--birdie)"></i>birdie</span>
+       <span><i style="background:var(--par)"></i>par</span><span><i style="background:var(--bogey)"></i>bogey</span>
+       <span><i style="background:var(--double)"></i>dbl+</span><span><span class="bonusdot">◆</span> bonus hole</span>`));
+  } else {
+    p.appendChild(el('div','note','Stableford points shown (net). ◆ marks the double-points bonus hole for this nine — points there are already doubled.'));
+  }
+  // team + individual result for this match
+  const tr=DATA.team_results.find(x=>x.m===curMatch);
+  const nineStbl=[...CODES].sort((a,b)=>DATA.stbl_match[curMatch][b]-DATA.stbl_match[curMatch][a]);
+  const res=el('div','panel');res.style.marginTop='14px';
+  res.appendChild(el('h2','sec','This nine — results'));
+  res.appendChild(el('div',null,
+    `<div style="font-size:14px;margin-bottom:6px"><b>Team match:</b> ${tr.twoNames.join(' & ')} ${tr.s2} vs ${tr.threeNames.join(' / ')} ${tr.s3} — `+
+    (tr.winner==='tie'?'<b>tied</b>':'<b style="color:var(--accent)">'+(tr.winner==='two'?tr.twoNames.join(' & '):tr.threeNames.join(' / '))+' by '+tr.margin+'</b>')+'</div>'+
+    `<div style="font-size:14px"><b>Stableford (this nine):</b> `+nineStbl.map((c,i)=>`${i==0?'🥇 ':''}${NAME[c]} ${DATA.stbl_match[curMatch][c]}`).join(' · ')+`</div>`));
+  s.appendChild(p); s.appendChild(res);
+}
+function buildScorecard(m){
+  const wrap=el('div','scwrap');
+  const holes=[1,2,3,4,5,6,7,8,9];
+  const bonusDbl=DATA.matches.find(x=>x.m===m).bonus.dbl;
+  let head=`<tr class="parrow"><th class="pl">Hole</th>`+holes.map(h=>`<th>${h}${h===bonusDbl&&scMode==='pts'?' <span class="bonusdot">◆</span>':''}</th>`).join('')+`<th>Tot</th></tr>`;
+  const co=DATA.course;
+  head+=`<tr class="parrow"><th class="pl">Par</th>`+holes.map(h=>`<th>${co[m+'_'+h].par}</th>`).join('')+`<th></th></tr>`;
+  head+=`<tr class="parrow"><th class="pl">SI</th>`+holes.map(h=>`<th style="color:var(--muted);font-weight:400">${co[m+'_'+h].si}</th>`).join('')+`<th></th></tr>`;
+  let body='';
+  const order=[...CODES].sort((a,b)=>DATA.stbl_match[m][b]-DATA.stbl_match[m][a]);
+  order.forEach(c=>{
+    const card=DATA.scorecard[m][c];
+    let tot=0;
+    const cells=card.map(x=>{
+      if(scMode==='pts'){tot+=x.pts;return `<td>${x.pts}</td>`;}
+      const val=scMode==='net'?x.net:x.gross;
+      const catk=scMode==='net'?x.ncat:x.gcat;
+      tot+=val;
+      return `<td><span class="cell c-${catk}">${val}</span></td>`;
+    }).join('');
+    body+=`<tr><td class="pl"><span class="dot" style="background:${PC[c]};display:inline-block;margin-right:6px"></span>${NAME[c]}</td>${cells}<td class="tot">${tot}</td></tr>`;
+  });
+  wrap.appendChild(el('table','sc',`<thead>${head}</thead><tbody>${body}</tbody>`));
+  return wrap;
+}
+
+// ---------- PLAYER CARDS ----------
+function renderPlayers(){
+  const s=$('#players'); s.innerHTML='';
+  const p=el('div','panel');
+  p.appendChild(el('h2','sec','Player cards — pick a player'));
+  const sel=el('div','selrow');
+  CODES.forEach(c=>{const b=el('button',c===curPlayer?'active':'');
+    b.innerHTML=`<span class="dot" style="background:${PC[c]};display:inline-block;margin-right:6px"></span>${NAME[c]}`;
+    if(c===curPlayer)b.style.background=PC[c],b.style.borderColor=PC[c];
+    b.onclick=()=>{curPlayer=c;renderPlayers();};sel.appendChild(b);});
+  p.appendChild(sel);
+  const c=curPlayer;
+  const rank=[...CODES].sort((a,b)=>DATA.overall[b]-DATA.overall[a]).indexOf(c)+1;
+  const bh=DATA.best_hole[c], wh=DATA.worst_hole[c];
+  const fmt=d=>d<=-2?'eagle':d===-1?'birdie':d===0?'par':d===1?'bogey':(d>=2?'+'+d:d);
+  const kpis=el('div','kpis');
+  [['Stableford',DATA.overall[c]],['Rank','#'+rank+' of 5'],['Team wins',DATA.team_wins[c]],
+   ['Gross total',DATA.gross_total[c]],['Net total',DATA.net_total[c]],['Handicap',HC[c]]]
+   .forEach(([k,v])=>{const st=el('div','stat');st.innerHTML=`<div class="lab">${k}</div><div class="val">${v}</div>`;kpis.appendChild(st);});
+  p.appendChild(kpis);
+  // best/worst hole
+  const bw=el('div','grid');
+  bw.appendChild(mk('Best hole of the weekend',
+    `net ${fmt(bh.nd)} `,`${bh.label} · hole ${bh.h} (par ${bh.par}) — gross ${bh.gross}, net ${bh.net}`));
+  bw.appendChild(mk('Roughest hole',
+    `net ${fmt(wh.nd)} `,`${wh.label} · hole ${wh.h} (par ${wh.par}) — gross ${wh.gross}, net ${wh.net}`));
+  p.appendChild(bw);
+  // category bars (net)
+  const catP=el('div','panel');catP.style.marginTop='14px';
+  catP.appendChild(el('h2','sec',NAME[c]+' — hole results (net vs gross)'));
+  const cats=[['eagle','Eagle+','#0b7d5b'],['birdie','Birdie','#4fae7d'],
+    ['par','Par','#8aa08a'],['bogey','Bogey','#e2915f'],['double','Dbl+','#d9694a']];
+  // scale bars to this player's max count so the biggest bar nearly fills the track
+  let pmax=1;
+  cats.forEach(([k])=>{pmax=Math.max(pmax,DATA.catcount[c].net[k],DATA.catcount[c].gross[k]);});
+  catP.appendChild(el('div','note','Net results (top) vs gross (bottom). Bars scaled to this player’s most-frequent result.'));
+  const cb=el('div','catbars');
+  cats.forEach(([k,lab,col])=>{
+    const nn=DATA.catcount[c].net[k];const w1=Math.round(nn/pmax*100);
+    cb.appendChild(el('div','catbar',
+      `<span class="k">${lab}</span>
+       <span class="track"><span class="fill" style="width:${w1}%;background:${col}"></span></span><span class="n">${nn}</span>
+       <span style="width:40px;text-align:right;color:var(--muted);font-size:11px">net</span>`));
+  });
+  catP.appendChild(cb);
+  // gross row
+  const cbg=el('div','catbars');cbg.style.marginTop='10px';
+  cats.forEach(([k,lab,col])=>{
+    const ng=DATA.catcount[c].gross[k];const w2=Math.round(ng/pmax*100);
+    cbg.appendChild(el('div','catbar',
+      `<span class="k">${lab}</span>
+       <span class="track"><span class="fill" style="width:${w2}%;background:${col};opacity:.6"></span></span><span class="n">${ng}</span>
+       <span style="width:40px;text-align:right;color:var(--muted);font-size:11px">gross</span>`));
+  });
+  catP.appendChild(cbg);
+  p.appendChild(catP);
+  // per-nine stableford
+  const npP=el('div','panel');npP.style.marginTop='14px';
+  npP.appendChild(el('h2','sec','Stableford by nine'));
+  const nb=el('div','ninebars');
+  const vals=[];for(let m=1;m<=7;m++)vals.push(DATA.stbl_match[m][c]);
+  const mxv=Math.max(...vals);
+  for(let m=1;m<=7;m++){const v=DATA.stbl_match[m][c];
+    const b=el('div','b');b.innerHTML=`<span class="v">${v}</span><div class="bar2" style="height:${Math.round(v/mxv*70)}px;background:${PC[c]}"></div><span class="cap">M${m}</span>`;nb.appendChild(b);}
+  npP.appendChild(nb);
+  p.appendChild(npP);
+  s.appendChild(p);
+  function mk(lab,big,sub){const d=el('div','stat');d.innerHTML=`<div class="lab">${lab}</div><div class="val">${big}</div><div class="who2">${sub}</div>`;return d;}
+}
+
+// ---------- RECORDS ----------
+function renderRecords(){
+  const s=$('#records'); s.innerHTML='';
+  const p=el('div','panel'); p.appendChild(el('h2','sec','Weekend records & fun stats'));
+  const g=el('div','grid');
+  const R=DATA.records;
+  const card=(lab,val,who)=>{const d=el('div','stat');d.innerHTML=`<div class="lab">${lab}</div><div class="val">${val}</div><div class="who2">${who}</div>`;return d;};
+  g.appendChild(card('Most net birdies',R.net_birdies[1],R.net_birdies[0].join(', ')));
+  g.appendChild(card('Most net eagles',R.net_eagles[1],R.net_eagles[0].join(', ')||'—'));
+  g.appendChild(card('Most net pars',R.net_pars[1],R.net_pars[0].join(', ')));
+  g.appendChild(card('Most gross birdies',R.gross_birdies[1],R.gross_birdies[0].join(', ')));
+  g.appendChild(card('Most gross pars',R.gross_pars[1],R.gross_pars[0].join(', ')));
+  g.appendChild(card('Lowest gross nine',DATA.low_gross_nine.val,DATA.low_gross_nine.name+' · '+DATA.low_gross_nine.label));
+  g.appendChild(card('Best Stableford nine',DATA.best_stbl_nine.val,DATA.best_stbl_nine.name+' · '+DATA.best_stbl_nine.label));
+  // biggest team blowout & closest
+  let big=DATA.team_results.filter(t=>t.winner!=='tie').reduce((a,b)=>b.margin>a.margin?b:a);
+  let close=DATA.team_results.filter(t=>t.winner!=='tie').reduce((a,b)=>b.margin<a.margin?b:a);
+  const wn=t=>t.winner==='two'?t.twoNames.join(' & '):t.threeNames.join(' / ');
+  g.appendChild(card('Biggest team win','+'+big.margin,wn(big)+' · '+big.label));
+  g.appendChild(card('Closest team match','+'+close.margin,wn(close)+' · '+close.label));
+  p.appendChild(g);
+  s.appendChild(p);
+}
+
+let curMatch=1, curPlayer='C';
+renderStandings();renderTeams();renderMatches();renderPlayers();renderRecords();
+</script>
+</body>
+</html>
