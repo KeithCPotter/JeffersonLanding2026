@@ -119,6 +119,14 @@
   .ninebars .b .cap{font-size:10px;color:var(--muted)}
   .ninebars .b .v{font-size:11px;font-weight:700}
   .note{font-size:12px;color:var(--muted);margin-top:10px}
+  .bchip{display:inline-block;font-size:9px;font-weight:800;padding:1px 6px;border-radius:6px;
+    background:var(--gold);color:#3a2e07;margin-left:5px;vertical-align:middle;letter-spacing:.3px}
+  table.tm td.det{text-align:center;white-space:nowrap}
+  table.tm tr.rbonus{background:rgba(200,164,77,.14)}
+  table.tm td.wl{color:var(--accent);font-weight:800}
+  .x2{color:#b8860b;font-weight:800}
+  @media(prefers-color-scheme:dark){.x2{color:var(--gold)}}
+  .drop{color:var(--muted);font-size:10px}
   .foot{text-align:center;color:var(--muted);font-size:12px;margin-top:30px}
 </style>
 </head>
@@ -6138,6 +6146,7 @@ function renderTeams(){
 
 // ---------- SCORECARDS (by match) ----------
 let scMode='net';
+let pMode='net';
 function renderMatches(){
   const s=$('#matches'); s.innerHTML='';
   const p=el('div','panel');
@@ -6171,6 +6180,63 @@ function renderMatches(){
     (tr.winner==='tie'?'<b>tied</b>':'<b style="color:var(--accent)">'+(tr.winner==='two'?tr.twoNames.join(' & '):tr.threeNames.join(' / '))+' by '+tr.margin+'</b>')+'</div>'+
     `<div style="font-size:14px"><b>Stableford (this nine):</b> `+nineStbl.map((c,i)=>`${i==0?'🥇 ':''}${NAME[c]} ${DATA.stbl_match[curMatch][c]}`).join(' · ')+`</div>`));
   s.appendChild(p); s.appendChild(res);
+  s.appendChild(buildTeamHoleTable(curMatch));
+}
+function buildTeamHoleTable(m){
+  const tr=DATA.team_results.find(x=>x.m===m);
+  const co=DATA.course, sc=DATA.scorecard[m];
+  const init=c=>NAME[c].charAt(0).toUpperCase();
+  const dropAt=h=> tr.drops[(h===1||h===4||h===7)?'147':(h===2||h===5||h===8)?'258':'369'];
+  const panel=el('div','panel'); panel.style.marginTop='14px';
+  panel.appendChild(el('h2','sec','Team match — hole by hole'));
+  panel.appendChild(el('div','note',
+    `2-man: <b>${tr.twoNames.join(' & ')}</b> (both count every hole) · 3-man: <b>${tr.threeNames.join(' / ')}</b> (one drops each hole). `+
+    `Team hole score = the two counting net scores added. On the <span class="bchip">BEST ×2</span> hole only the lower net counts, doubled; on the <span class="bchip">WORST ×2</span> hole only the higher net counts, doubled. Lowest total over the nine wins.`));
+  const wrap=el('div','scwrap');
+  let head=`<tr class="parrow"><th class="pl">Hole</th><th>Par</th>
+    <th>${tr.two.map(init).join(' & ')} <small style="color:var(--muted)">(2-man)</small></th><th>Tot</th>
+    <th>3-man (rotating)</th><th>Tot</th><th>Hole</th></tr>`;
+  let body='';
+  let r2=0,r3=0;
+  for(let h=1;h<=9;h++){
+    const par=co[m+'_'+h].par;
+    const isBest=h===tr.bonus.best, isWorst=h===tr.bonus.worst;
+    const n2=tr.two.map(c=>sc[c][h-1].net);
+    const drop=dropAt(h); const c3=tr.three.filter(c=>c!==drop);
+    const n3=c3.map(c=>sc[c][h-1].net);
+    const t2=tr.holeTot[h-1][0], t3=tr.holeTot[h-1][1];
+    r2+=t2; r3+=t3;
+    function det(codes,nets){
+      const a=[...nets].sort((x,y)=>x-y);
+      if(isBest) return `<span class="x2">${a[0]}×2</span> <span class="drop">(best)</span>`;
+      if(isWorst) return `<span class="x2">${a[a.length-1]}×2</span> <span class="drop">(worst)</span>`;
+      return codes.map((c,i)=>`${init(c)}${nets[i]}`).join(' + ');
+    }
+    const w2=t2<t3, w3=t3<t2;
+    const hole = t2===t3?'tie':(w2?tr.two.map(init).join('&'):'3-man');
+    const dropNote=`<span class="drop"> · ${init(drop)} out</span>`;
+    body+=`<tr class="${(isBest||isWorst)?'rbonus':''}">
+      <td class="pl">${h}${isBest?'<span class="bchip">BEST ×2</span>':''}${isWorst?'<span class="bchip">WORST ×2</span>':''}</td>
+      <td>${par}</td>
+      <td class="det">${det(tr.two,n2)}</td>
+      <td class="tot ${w2?'wl':''}">${t2}</td>
+      <td class="det">${det(c3,n3)}${dropNote}</td>
+      <td class="tot ${w3?'wl':''}">${t3}</td>
+      <td style="font-size:11px;color:${w2||w3?'var(--accent)':'var(--muted)'}">${hole}</td></tr>`;
+  }
+  const fw2=tr.winner==='two', fw3=tr.winner==='three';
+  body+=`<tr style="border-top:2px solid var(--line)">
+    <td class="pl"><b>TOTAL</b></td><td></td><td></td>
+    <td class="tot ${fw2?'wl':''}">${tr.s2}</td><td></td>
+    <td class="tot ${fw3?'wl':''}">${tr.s3}</td>
+    <td style="font-size:11px;font-weight:800;color:var(--accent)">${tr.winner==='tie'?'TIE':(fw2?tr.two.map(init).join('&'):'3-man')}</td></tr>`;
+  wrap.appendChild(el('table','sc tm',`<thead>${head}</thead><tbody>${body}</tbody>`));
+  panel.appendChild(wrap);
+  panel.appendChild(el('div','note',
+    tr.winner==='tie'?`Result: tied at ${tr.s2} apiece.`:
+    `Result: <b>${fw2?tr.twoNames.join(' & '):tr.threeNames.join(' / ')}</b> win by ${tr.margin} `+
+    `(${Math.min(tr.s2,tr.s3)} to ${Math.max(tr.s2,tr.s3)}). Letters: `+DATA.players.map(p=>init(p.code)+'='+p.name).join(', ')+'.'));
+  return panel;
 }
 function buildScorecard(m){
   const wrap=el('div','scwrap');
@@ -6194,6 +6260,27 @@ function buildScorecard(m){
     }).join('');
     body+=`<tr><td class="pl"><span class="dot" style="background:${PC[c]};display:inline-block;margin-right:6px"></span>${NAME[c]}</td>${cells}<td class="tot">${tot}</td></tr>`;
   });
+  wrap.appendChild(el('table','sc',`<thead>${head}</thead><tbody>${body}</tbody>`));
+  return wrap;
+}
+
+function buildPlayerCard(c){
+  const wrap=el('div','scwrap');
+  const holes=[1,2,3,4,5,6,7,8,9];
+  let head=`<tr class="parrow"><th class="pl">Nine</th>`+holes.map(h=>`<th>${h}</th>`).join('')+`<th>Tot</th></tr>`;
+  let body='';
+  for(let m=1;m<=7;m++){
+    const dbl=DATA.matches.find(x=>x.m===m).bonus.dbl;
+    const card=DATA.scorecard[m][c]; let tot=0;
+    const cells=card.map(x=>{
+      if(pMode==='pts'){tot+=x.pts;return `<td>${x.pts}${x.h===dbl?' <span class="bonusdot">◆</span>':''}</td>`;}
+      const val=pMode==='net'?x.net:x.gross;
+      const catk=pMode==='net'?x.ncat:x.gcat;
+      tot+=val;
+      return `<td><span class="cell c-${catk}">${val}</span></td>`;
+    }).join('');
+    body+=`<tr><td class="pl">M${m} <small style="color:var(--muted);font-weight:400">${DATA.labels[m]}</small></td>${cells}<td class="tot">${tot}</td></tr>`;
+  }
   wrap.appendChild(el('table','sc',`<thead>${head}</thead><tbody>${body}</tbody>`));
   return wrap;
 }
@@ -6225,6 +6312,23 @@ function renderPlayers(){
   bw.appendChild(mk('Roughest hole',
     `net ${fmt(wh.nd)} `,`${wh.label} · hole ${wh.h} (par ${wh.par}) — gross ${wh.gross}, net ${wh.net}`));
   p.appendChild(bw);
+  // personal scorecards — all 7 nines
+  const scP=el('div','panel');scP.style.marginTop='14px';
+  scP.appendChild(el('h2','sec',NAME[c]+' — scorecards, all 7 nines'));
+  const ptg=el('div','toggle');
+  [['net','Net'],['gross','Gross'],['pts','Stableford']].forEach(([k,lab])=>{
+    const bb=el('button',pMode===k?'active':'');bb.textContent=lab;bb.onclick=()=>{pMode=k;renderPlayers();};ptg.appendChild(bb);});
+  scP.appendChild(ptg);
+  scP.appendChild(buildPlayerCard(c));
+  if(pMode!=='pts'){
+    scP.appendChild(el('div','legend',
+      `<span><i style="background:var(--eagle)"></i>eagle+</span><span><i style="background:var(--birdie)"></i>birdie</span>
+       <span><i style="background:var(--par)"></i>par</span><span><i style="background:var(--bogey)"></i>bogey</span>
+       <span><i style="background:var(--double)"></i>dbl+</span>`));
+  } else {
+    scP.appendChild(el('div','note','Net Stableford points per hole. ◆ marks that nine’s double-points bonus hole. Tot = points for the nine.'));
+  }
+  p.appendChild(scP);
   // category bars (net)
   const catP=el('div','panel');catP.style.marginTop='14px';
   catP.appendChild(el('h2','sec',NAME[c]+' — hole results (net vs gross)'));
