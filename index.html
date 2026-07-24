@@ -127,6 +127,10 @@
   .x2{color:#b8860b;font-weight:800}
   @media(prefers-color-scheme:dark){.x2{color:var(--gold)}}
   .drop{color:var(--muted);font-size:10px}
+  .tmtoggle{margin-top:12px;border:1px solid var(--accent);background:transparent;color:var(--accent);
+    font-weight:700;font-size:12px;padding:6px 14px;border-radius:20px;cursor:pointer}
+  .tmtoggle:hover{background:var(--accent);color:#fff}
+  .tmbox{margin-top:8px;border-top:1px dashed var(--line);padding-top:8px}
   .foot{text-align:center;color:var(--muted);font-size:12px;margin-top:30px}
 </style>
 </head>
@@ -6139,6 +6143,15 @@ function renderTeams(){
       <div class="teamrow ${w3?'win':''}"><span class="nm">${t.threeNames.join(' / ')} <small style="color:var(--muted)">(3-man)</small></span><span class="sc">${t.s3}</span></div>
       ${t.winner==='tie'?'<span class="badge tie">Tied — '+t.s2+' apiece</span>'
         :'<span class="badge">'+ (w2?t.twoNames.join(' & '):t.threeNames.join(' / ')) +' win by '+t.margin+'</span>'}`;
+    const tgl=el('button','tmtoggle','Show hole-by-hole  ▾');
+    const box=el('div','tmbox'); box.style.display='none'; let built=false;
+    tgl.onclick=()=>{
+      if(!built){box.appendChild(buildTeamHoleInner(t.m));built=true;}
+      const open=box.style.display==='none';
+      box.style.display=open?'block':'none';
+      tgl.textContent=open?'Hide hole-by-hole  ▴':'Show hole-by-hole  ▾';
+    };
+    c.appendChild(tgl); c.appendChild(box);
     p.appendChild(c);
   });
   s.appendChild(p);
@@ -6183,12 +6196,17 @@ function renderMatches(){
   s.appendChild(buildTeamHoleTable(curMatch));
 }
 function buildTeamHoleTable(m){
+  const panel=el('div','panel'); panel.style.marginTop='14px';
+  panel.appendChild(el('h2','sec','Team match — hole by hole'));
+  panel.appendChild(buildTeamHoleInner(m));
+  return panel;
+}
+function buildTeamHoleInner(m){
   const tr=DATA.team_results.find(x=>x.m===m);
   const co=DATA.course, sc=DATA.scorecard[m];
   const init=c=>NAME[c].charAt(0).toUpperCase();
   const dropAt=h=> tr.drops[(h===1||h===4||h===7)?'147':(h===2||h===5||h===8)?'258':'369'];
-  const panel=el('div','panel'); panel.style.marginTop='14px';
-  panel.appendChild(el('h2','sec','Team match — hole by hole'));
+  const panel=el('div');
   panel.appendChild(el('div','note',
     `2-man: <b>${tr.twoNames.join(' & ')}</b> (both count every hole) · 3-man: <b>${tr.threeNames.join(' / ')}</b> (one drops each hole). `+
     `Team hole score = the two counting net scores added. On the <span class="bchip">BEST ×2</span> hole only the lower net counts, doubled; on the <span class="bchip">WORST ×2</span> hole only the higher net counts, doubled. Lowest total over the nine wins.`));
